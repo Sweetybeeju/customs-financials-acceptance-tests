@@ -1,16 +1,26 @@
 package uk.gov.hmrc.config
 
-import java.io.InputStream
+import java.io.IOException
 import java.util.Properties
 
-class Environment {
+object Environment {
 
-  def getProperties: Properties = {
-    val inJarOffClasspathRootPath = "env.properties"
-    val inputStream: InputStream = classOf[Nothing].getClassLoader.getResourceAsStream(inJarOffClasspathRootPath)
-    val props = new Properties()
-    props.load(inputStream)
-    props
+  private def getProperties(): Properties = {
+    val prop = new Properties()
+    prop
+  }
+
+  def getProperty(key:String) : String = {
+    var value : String = ""
+    try{
+      value = getProperties().getProperty(key)
+    } catch {
+        case ex : IOException => {
+          println("Oops something went wrong" )
+        }
+    }
+    value
   }
 
 }
+
