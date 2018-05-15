@@ -24,6 +24,10 @@ trait Host {
       println("***** executing test on staging environment ******")
       "http://localhost:9876"
     }
+    case "qa" => {
+      println("***** executing test on qa environment *****")
+      "https://www.qa.tax.service.gov.uk"
+    }
     case _ => println(s"environment not recognised")
   }
 }
