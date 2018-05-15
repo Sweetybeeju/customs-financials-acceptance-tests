@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-sbt test
+sbt -Dbrowser=chrome -Denv=dev clean test
