@@ -5,14 +5,26 @@ import org.openqa.selenium.chrome.{ChromeDriver, ChromeDriverService}
 import org.scalatest.Matchers
 import org.scalatest.selenium.WebBrowser
 
+
 import scala.util.Try
 
 trait Host {
   val hostIs = System.getProperty("env" , "local").toLowerCase()
 
   val host = hostIs match {
-    case "local" => s"http://localhost:9000"
-//    case _ => println(s"env $host not recognised")
+    case "local" => {
+      println("********* executing test on local environment ******")
+      "http://localhost:9876"
+    }
+    case "dev" => {
+      println("********* executing test on dev environment ******")
+      "http://localhost:9876"
+    }
+    case "staging" => {
+      println("***** executing test on staging environment ******")
+      "http://localhost:9876"
+    }
+    case _ => println(s"environment not recognised")
   }
 }
 
@@ -36,7 +48,7 @@ trait Driver extends Matchers with WebBrowser with Host{
   val driver = createDriver
 
   private def createDriver: WebDriver = {
-    val browser = System.getProperty("Browser", "chrome")
+    val browser = System.getProperty("browser", "chrome")
     browser match {
       case "chrome" => createChromeDriver
       case _ => throw new IllegalArgumentException(s"browser $browser not recognised")
@@ -47,6 +59,8 @@ trait Driver extends Matchers with WebBrowser with Host{
     val driver = new ChromeDriver()
     driver
   }
+
+
 
   sys addShutdownHook {
     Try(driver.quit())

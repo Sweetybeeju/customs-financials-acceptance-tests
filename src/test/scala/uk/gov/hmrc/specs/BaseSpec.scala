@@ -1,4 +1,4 @@
-package uk.gov.hmrc.tests
+package uk.gov.hmrc.specs
 
 import org.openqa.selenium.WebDriver
 import org.scalatest._
@@ -13,6 +13,7 @@ trait BaseSpec extends TestSpec with GivenWhenThen{
   var counter : Int = 0
 
   override def beforeEach(): Unit = {
+    webDriver.manage().deleteAllCookies()
     counter = counter + 1
     println("*********************** Executing tests ********************----> "+counter)
   }
