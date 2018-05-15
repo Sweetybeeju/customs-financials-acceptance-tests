@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-sbt -Dbrowser=chrome -Denv=dev clean test
+sbt -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver -Denv=dev clean test

@@ -9,7 +9,7 @@ import org.scalatest.selenium.WebBrowser
 import scala.util.Try
 
 trait Host extends LazyLogging{
-  val hostIs = System.getProperty("env" , "local").toLowerCase()
+  val hostIs: String = System.getProperty("env" , "local").toLowerCase()
 
   val host = hostIs match {
       case "local" => {
