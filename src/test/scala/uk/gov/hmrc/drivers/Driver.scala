@@ -12,20 +12,24 @@ trait Host extends LazyLogging{
   val hostIs = System.getProperty("env" , "local").toLowerCase()
 
   val host = hostIs match {
-    case "local" => {
-      logger.info("********* executing tests on local environment *********")
-      "http://localhost:9876"
+      case "local" => {
+        logger.info("********* executing tests on local environment *********")
+        "http://localhost:9876"
+      }
+      case "dev" => {
+        logger.info("********* executing tests on dev environment ******")
+        "http://localhost:9876"
+      }
+      case "staging" => {
+        logger.info("********* executing tests on staging environment *********")
+        "http://localhost:9876"
+      }
+      case "qa" => {
+        logger.info("********* executing tests on qa environment *********")
+        "http://localhost:9876"
+      }
+      case _ => throw new IllegalArgumentException("environment not recognised")
     }
-    case "dev" => {
-      logger.info("********* executing tests on dev environment ******")
-      "http://localhost:9876"
-    }
-    case "staging" => {
-      logger.info("********* executing tests on staging environment *********")
-      "http://localhost:9876"
-    }
-    case _ => throw new IllegalArgumentException("environment not recognised")
-  }
 }
 
 trait Driver extends Matchers with WebBrowser with Host{
