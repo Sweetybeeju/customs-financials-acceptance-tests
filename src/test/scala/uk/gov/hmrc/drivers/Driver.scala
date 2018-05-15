@@ -1,30 +1,30 @@
 package uk.gov.hmrc.drivers
 
+import com.typesafe.scalalogging.LazyLogging
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.{ChromeDriver, ChromeDriverService}
 import org.scalatest.Matchers
 import org.scalatest.selenium.WebBrowser
 
-
 import scala.util.Try
 
-trait Host {
+trait Host extends LazyLogging{
   val hostIs = System.getProperty("env" , "local").toLowerCase()
 
   val host = hostIs match {
     case "local" => {
-      println("********* executing test on local environment ******")
+      logger.info("********* executing tests on local environment *********")
       "http://localhost:9876"
     }
     case "dev" => {
-      println("********* executing test on dev environment ******")
+      logger.info("********* executing tests on dev environment ******")
       "http://localhost:9876"
     }
     case "staging" => {
-      println("***** executing test on staging environment ******")
+      logger.info("********* executing tests on staging environment *********")
       "http://localhost:9876"
     }
-    case _ => println(s"environment not recognised")
+    case _ => throw new IllegalArgumentException("environment not recognised")
   }
 }
 
@@ -35,7 +35,6 @@ trait Driver extends Matchers with WebBrowser with Host{
   lazy val isMac: Boolean = getOs.startsWith("Mac")
   lazy val isLinux: Boolean = getOs.startsWith("Linux")
   lazy val waitTime = 30
-
 
   if (isMac) {
     System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "./src/test/drivers/chrome/chromedriverMac")
@@ -50,7 +49,10 @@ trait Driver extends Matchers with WebBrowser with Host{
   private def createDriver: WebDriver = {
     val browser = System.getProperty("browser", "chrome")
     browser match {
-      case "chrome" => createChromeDriver
+      case "chrome" => {
+        logger.info("******* executing tests on chrome browser *********")
+        createChromeDriver
+      }
       case _ => throw new IllegalArgumentException(s"browser $browser not recognised")
     }
   }
@@ -59,8 +61,6 @@ trait Driver extends Matchers with WebBrowser with Host{
     val driver = new ChromeDriver()
     driver
   }
-
-
 
   sys addShutdownHook {
     Try(driver.quit())

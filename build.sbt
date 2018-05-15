@@ -11,8 +11,7 @@ libraryDependencies ++= Seq(
   "org.seleniumhq.selenium" % "selenium-java" % "3.4.0",
   "org.pegdown" % "pegdown" % "1.6.0" % Test,
   "ch.qos.logback" % "logback-classic" % "1.2.3",
-  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
-  "org.scala-lang" % "scala-library" % "2.12.3"
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
 )
 
 testOptions in Test ++= Seq(
