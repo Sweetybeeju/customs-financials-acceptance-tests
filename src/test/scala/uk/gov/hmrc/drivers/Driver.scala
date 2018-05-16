@@ -44,8 +44,7 @@ trait Driver extends Matchers with WebBrowser with Host{
     System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "./src/test/drivers/chrome/chromedriverMac")
     System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/src/test/resources/geckodriver")
   } else if (isLinux) {
-    System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "./src/test/drivers/chrome/chromedriverLinux")
-    System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/src/test/resources/geckodriver")
+    System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver")
   }
 
   val driver = createDriver
