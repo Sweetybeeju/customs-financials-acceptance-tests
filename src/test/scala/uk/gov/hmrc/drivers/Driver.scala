@@ -26,7 +26,7 @@ trait Host extends LazyLogging{
       }
       case "qa" => {
         logger.info("********* executing tests on qa environment *********")
-        "http://localhost:9876"
+        "https://www.qa.tax.service.gov.uk"
       }
       case _ => throw new IllegalArgumentException("environment not recognised")
     }
