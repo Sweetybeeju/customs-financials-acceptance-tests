@@ -9,9 +9,10 @@ scalaVersion := "2.11.11"
 val scalatestVersion = "3.0.4"
 
 testOptions in Test ++= Seq(
-  Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports"),
-  Tests.Argument(TestFrameworks.ScalaTest, "-o")
+  Tests.Argument(TestFrameworks.ScalaTest, "-o"),
+  Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports")
 )
+
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % scalatestVersion % "test",
   "org.seleniumhq.selenium" % "selenium-java" % "3.7.1" % "test",
