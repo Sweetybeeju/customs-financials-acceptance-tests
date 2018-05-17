@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-sbt -Dbrowser=chrome -Denv=qa clean test
+sbt -DturnOnProxy=yes clean test

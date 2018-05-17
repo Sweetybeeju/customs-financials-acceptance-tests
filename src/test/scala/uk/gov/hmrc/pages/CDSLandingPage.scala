@@ -1,6 +1,7 @@
 package uk.gov.hmrc.pages
 
 import com.typesafe.scalalogging.LazyLogging
+import org.openqa.selenium.By
 import uk.gov.hmrc.drivers.Env
 
 object CDSLandingPage extends WebPage with LazyLogging{
@@ -19,7 +20,7 @@ object CDSLandingPage extends WebPage with LazyLogging{
 
   def checkCDSLandingPageHeader = {
     logger.info("*********** checking for Hello from customs-financials-frontend !  **************")
-    waitForElementVisibility(helloCDSText.underlying)
+    waitForElement(By.xpath("//*[@id='content']/article/h1"))
     helloCDSText.isDisplayed
     helloCDSText.text shouldBe headerText
   }
