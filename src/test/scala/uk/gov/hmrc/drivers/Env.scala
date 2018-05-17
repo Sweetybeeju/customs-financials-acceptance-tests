@@ -93,9 +93,7 @@ trait Env extends Matchers with WebBrowser with Host{
     capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true)
 
     options.merge(capabilities)
-
-    val driver = new ChromeDriver()
-    driver
+    new ChromeDriver(options)
   }
 
   sys addShutdownHook {
