@@ -18,7 +18,7 @@ trait Host extends LazyLogging{
 
   val hostIs = Option(System.getProperty("env")).getOrElse("qa")
   val turnOnProxy = Option(System.getProperty("turnOnProxy")).getOrElse("No")
-  val proxyPort = Option(System.getProperty("proxyPort")).getOrElse("16666").toInt
+  val proxyPort = Option(System.getProperty("proxyPort")).getOrElse("16688").toInt
 
   val proxy = new BrowserMobProxyServer
   private val isJsEnabled: Boolean = true
