@@ -92,7 +92,6 @@ trait Env extends Matchers with WebBrowser with Host{
     capabilities.setBrowserName(BrowserType.CHROME)
     capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true)
 
-    options.addArguments("--incognito")
     options.merge(capabilities)
 
     val driver = new ChromeDriver()
