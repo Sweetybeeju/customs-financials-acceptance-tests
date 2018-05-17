@@ -32,13 +32,14 @@ trait Host extends LazyLogging{
     }
 }
 
-trait Driver extends Matchers with WebBrowser with Host{
+trait Env extends Matchers with WebBrowser with Host{
 
   private def getOs: String = System.getProperty("os.name")
 
   lazy val isMac: Boolean = getOs.startsWith("Mac")
   lazy val isLinux: Boolean = getOs.startsWith("Linux")
   lazy val waitTime = 30
+  lazy val pollingWaitTime = 3000
 
   if (isMac) {
     System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "./src/test/drivers/chrome/chromedriverMac")
@@ -71,4 +72,4 @@ trait Driver extends Matchers with WebBrowser with Host{
 
 }
 
-object Driver extends Driver
+object Env extends Env
