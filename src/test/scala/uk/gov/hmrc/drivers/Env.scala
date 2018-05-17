@@ -1,15 +1,28 @@
 package uk.gov.hmrc.drivers
 
+import java.net.InetSocketAddress
+import java.util.concurrent.TimeUnit
+
 import com.typesafe.scalalogging.LazyLogging
+import net.lightbody.bmp.BrowserMobProxyServer
+import net.lightbody.bmp.proxy.auth.AuthType
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.chrome.{ChromeDriver, ChromeDriverService}
+import org.openqa.selenium.chrome.{ChromeDriver, ChromeDriverService, ChromeOptions}
+import org.openqa.selenium.remote.{BrowserType, CapabilityType, DesiredCapabilities}
 import org.scalatest.Matchers
 import org.scalatest.selenium.WebBrowser
 
 import scala.util.Try
 
 trait Host extends LazyLogging{
-  val hostIs: String = System.getProperty("env" , "local").toLowerCase()
+
+  val hostIs = Option(System.getProperty("env")).getOrElse("qa")
+  val turnOnProxy = Option(System.getProperty("turnOnProxy")).getOrElse("No")
+  val proxyPort = Option(System.getProperty("proxyPort")).getOrElse("16666").toInt
+
+  val proxy = new BrowserMobProxyServer
+  private val isJsEnabled: Boolean = true
+  val options = new ChromeOptions()
 
   val host = hostIs match {
       case "local" => {
@@ -62,6 +75,26 @@ trait Env extends Matchers with WebBrowser with Host{
   }
 
   private def createChromeDriver: WebDriver = {
+
+    if (Env.turnOnProxy.equalsIgnoreCase("yes")) {
+      if (Env.proxy.isStarted) Env.proxy.stop()
+      Env.proxy.setConnectTimeout(15, TimeUnit.SECONDS)
+      val upstream_proxy = new InetSocketAddress("outbound-proxy-vip", 3128)
+      Env.proxy.setChainedProxy(upstream_proxy)
+      Env.proxy.chainedProxyAuthorization("jenkins", "$S4sJkIUkx&V", AuthType.BASIC)
+      Env.proxy.setTrustAllServers(true)
+      Env.proxy.start(Env.proxyPort)
+      Env.options.addArguments(s"--proxy-server=localhost:${Env.proxyPort}")
+    }
+
+    val capabilities = DesiredCapabilities.chrome()
+    capabilities.setJavascriptEnabled(true)
+    capabilities.setBrowserName(BrowserType.CHROME)
+    capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true)
+
+    options.addArguments("--incognito")
+    options.merge(capabilities)
+
     val driver = new ChromeDriver()
     driver
   }

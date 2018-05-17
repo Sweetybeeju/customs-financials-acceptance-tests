@@ -22,7 +22,11 @@ trait WebPage extends Page with WebBrowser with Matchers with Eventually {
     pageTitle shouldBe title
   }
 
-  def waitForElementVisibility(webelement: WebElement): WebElement = {
+ def waitForElementVisibility(webelement: WebElement): WebElement = {
     fluentWait.until(ExpectedConditions.visibilityOf(webelement))
+  }
+
+  def waitForElement(by: By, timeout: Int = 10): WebElement = {
+    fluentWait.until(ExpectedConditions.visibilityOfElementLocated(by))
   }
 }
