@@ -1,4 +1,4 @@
-package uk.gov.hmrc.specs
+package uk.gov.hmrc.acceptance
 
 import uk.gov.hmrc.pages.CDSLandingPage
 
@@ -12,7 +12,7 @@ class CDSLandingTestsSpec extends BaseSpec {
       CDSLandingPage.checkCDSLandingPageHeader
     }
 
-    ignore("Check title") {
+    scenario("Check title") {
       Given("i navigate to the cds landing page")
       CDSLandingPage.navigateToCDSLandingPage()
       Then("the page tile should be \"Hello from customs-financials-frontend\"")

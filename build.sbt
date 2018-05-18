@@ -1,4 +1,4 @@
-
+import uk.gov.hmrc.DefaultBuildSettings.addTestReportOption
 
 name := "customs-financials-acceptance-tests"
 
@@ -8,10 +8,29 @@ scalaVersion := "2.11.11"
 
 val scalatestVersion = "3.0.4"
 
+lazy val EndToEndTest = config("endtoend") extend Test
+lazy val AcceptanceTest = config("acceptance") extend Test
+
+val testConfig = Seq(AcceptanceTest,EndToEndTest)
+
+lazy val customsAcceptanceTests = (project in file("."))
+    .configs(testConfig: _*)
+    .settings(
+      allResolvers,
+      acceptanceTestSettings,
+      endtoendTestSettings
+    )
+
 testOptions in Test ++= Seq(
   Tests.Argument(TestFrameworks.ScalaTest, "-o"),
   Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports")
 )
+
+lazy val allResolvers = resolvers ++= Seq(
+  Resolver.bintrayRepo("hmrc", "releases"),
+  Resolver.jcenterRepo
+)
+
 
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % scalatestVersion % "test",
@@ -22,5 +41,27 @@ libraryDependencies ++= Seq(
   "net.lightbody.bmp" % "browsermob-core" % "2.1.5"
 )
 
+def filterTestsOnPackageName(rootPackage: String): (String => Boolean) = {
+  testName => testName startsWith("uk.gov.hmrc." + rootPackage)
+}
 
+lazy val acceptanceTestSettings =
+  inConfig(AcceptanceTest)(Defaults.testTasks) ++
+    Seq(
+      testOptions in AcceptanceTest := Seq(Tests.Filter(filterTestsOnPackageName("acceptance"))),
+      testOptions in AcceptanceTest += Tests.Argument(TestFrameworks.ScalaTest, "-oD"),
+      fork in AcceptanceTest := false,
+      parallelExecution in AcceptanceTest := false,
+      addTestReportOption(AcceptanceTest, "acceptance-reports")
+    )
+
+lazy val endtoendTestSettings =
+  inConfig(EndToEndTest)(Defaults.testTasks) ++
+    Seq(
+      testOptions in EndToEndTest := Seq(Tests.Filter(filterTestsOnPackageName("endtoend"))),
+      testOptions in EndToEndTest += Tests.Argument(TestFrameworks.ScalaTest, "-oD"),
+      fork in EndToEndTest := false,
+      parallelExecution in EndToEndTest := false,
+      addTestReportOption(EndToEndTest, "e2e-test-reports")
+    )
 

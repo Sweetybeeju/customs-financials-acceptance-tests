@@ -1,10 +1,9 @@
-package uk.gov.hmrc.specs
+package uk.gov.hmrc.acceptance
 
 import com.typesafe.scalalogging.LazyLogging
 import org.openqa.selenium.WebDriver
 import org.scalatest._
 import uk.gov.hmrc.drivers.Env
-import uk.gov.hmrc.pages.CDSLandingPage
 
 trait TestSpec extends FeatureSpec with BeforeAndAfterEach with BeforeAndAfterAll with Matchers{
   implicit val webDriver:WebDriver = Env.driver

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-sbt -DturnOnProxy=yes clean test
+sbt -DturnOnProxy=yes -Denv=qa acceptance:test

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-sbt -Dbrowser=chrome -Denv=local test
+sbt -Dbrowser=chrome  -Denv=local acceptance:test
