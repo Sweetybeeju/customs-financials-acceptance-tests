@@ -29,4 +29,7 @@ trait WebPage extends Page with WebBrowser with Matchers with Eventually {
   def waitForElement(by: By, timeout: Int = 10): WebElement = {
     fluentWait.until(ExpectedConditions.visibilityOfElementLocated(by))
   }
+
+  def navigateToPage: Unit = go to (url)
+
 }
