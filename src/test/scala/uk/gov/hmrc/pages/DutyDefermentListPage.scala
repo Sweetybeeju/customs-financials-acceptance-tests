@@ -10,7 +10,7 @@ import uk.gov.hmrc.drivers.Env
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class DutyDefermentListPage(driver: WebDriver) extends WebPage with LazyLogging with ScalaFutures {
+object DutyDefermentListPage extends WebPage with LazyLogging with ScalaFutures {
 
   override val url: String = s"${Env.host}/customs-financials/duty-deferment"
 
@@ -18,7 +18,7 @@ class DutyDefermentListPage(driver: WebDriver) extends WebPage with LazyLogging 
   private val mb = "^([0-9]+(\.[0-9]+)?)MB$".r
 
   def selectStatement(i: Int): Array[Byte] =
-    captureLinkContent(driver.findElement(By.cssSelector(s".duty-deferment-statements li:nth-child(${i}) a")).getAttribute("href"))
+    captureLinkContent(find(By.cssSelector(s".duty-deferment-statements li:nth-child(${i}) a")).getAttribute("href"))
 
   def pdfHasBeenDownloaded: Boolean = ???
 
