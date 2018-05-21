@@ -38,7 +38,8 @@ libraryDependencies ++= Seq(
   "org.pegdown" % "pegdown" % "1.6.0" % Test,
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
-  "net.lightbody.bmp" % "browsermob-core" % "2.1.5"
+  "net.lightbody.bmp" % "browsermob-core" % "2.1.5",
+  "com.typesafe.play" %% "play-ahc-ws-standalone" % "2.0.0-M1"
 )
 
 def filterTestsOnPackageName(rootPackage: String): (String => Boolean) = {

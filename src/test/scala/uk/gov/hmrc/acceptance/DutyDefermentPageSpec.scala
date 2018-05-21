@@ -10,11 +10,11 @@ class DutyDefermentPageSpec extends BaseSpec {
       val page = new DutyDefermentListPage(webDriver)
       page.navigateToPage
       When("I select a statement for a period")
-      page.selectStatement(0)
+      val statement = page.selectStatement(1)
       Then("I am able to access the pdf file for that period")
-      page.pdfHasBeenDownloaded should be (true)
+      (statement.length > 0) should be (true)
       And("I am able to understand the size of each PDF")
-      page.downloadedPdfIsSameAsDisplayedSizeForStatement(0)
+      page.sizeOfStatement(1) should be (statement.length) // TODO make this tolerant
     }
   }
 }
