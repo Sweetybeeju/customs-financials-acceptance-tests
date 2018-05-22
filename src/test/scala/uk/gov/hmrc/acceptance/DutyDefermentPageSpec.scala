@@ -12,8 +12,7 @@ class DutyDefermentPageSpec extends BaseSpec {
       val statement: Array[Byte] = DutyDefermentListPage.selectStatement(1)
       (statement.length > 0) should be(true)
       Then("i am able to access the pdf file for that period")
-      And("i am able to understand the size of each PDF")
-      DutyDefermentListPage.sizeOfStatement(1) should be("1.1MB") // TODO make this tolerant
+      DutyDefermentListPage.sizeOfStatement(1) should be("1.1MB")
     }
 
     scenario("Link text should be file name") {
@@ -34,7 +33,7 @@ class DutyDefermentPageSpec extends BaseSpec {
       (statement.length > 0) should be(true)
       Then("i am able to access the pdf file for that period")
       And("i am able to understand the size of each PDF")
-      DutyDefermentListPage.sizeOfStatement(1) should be("1.1MB") // TODO make this tolerant
+      DutyDefermentListPage.sizeOfStatement(1) should be("1.1MB")
     }
   }
 }

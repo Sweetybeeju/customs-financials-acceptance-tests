@@ -10,7 +10,7 @@ class EndToEndSpec extends BaseSpec {
       Given("i navigate to the cds landing page")
       CDSLandingPage.navigateToPage
       Then("i should see \"hello customs financials frontend\"")
-      CDSLandingPage.checkCDSLandingPageHeader
+      CDSLandingPage.cdsLandingPageHeader
     }
   }
 }

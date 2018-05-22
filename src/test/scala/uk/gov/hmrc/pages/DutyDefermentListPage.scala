@@ -14,9 +14,6 @@ object DutyDefermentListPage extends WebPage with LazyLogging with ScalaFutures 
 
   override val url: String = s"${Env.host}/customs-financials/duty-deferment"
 
-  private val kb = "^([0-9]+)kB$".r
-  private val mb = "MB"
-
   def selectStatement(i: Int): Array[Byte] = {
     captureLinkContent(find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) a")).get.underlying.getAttribute("href"))
   }
@@ -32,7 +29,6 @@ object DutyDefermentListPage extends WebPage with LazyLogging with ScalaFutures 
   def sizeOfStatement(i: Int): String = {
     val sizeInWords: String = find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) .file-size")).get.text
     sizeInWords
-    // TODO convert "1.1MB" or "512kB" etc into byte length as number
   }
 
   private def captureLinkContent(url: String): Array[Byte] = {

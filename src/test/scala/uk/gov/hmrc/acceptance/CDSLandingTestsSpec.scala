@@ -9,14 +9,14 @@ class CDSLandingTestsSpec extends BaseSpec {
       Given("i navigate to the cds landing page")
       CDSLandingPage.navigateToPage
       Then("i should see \"hello customs financials frontend\"")
-      CDSLandingPage.checkCDSLandingPageHeader
+      CDSLandingPage.cdsLandingPageHeader should be("Hello from customs-financials-frontend !")
     }
 
     scenario("Check title") {
       Given("i navigate to the cds landing page")
       CDSLandingPage.navigateToPage
       Then("the page tile should be \"Hello from customs-financials-frontend\"")
-      CDSLandingPage.assertPageTitle(CDSLandingPage.pageTitle)
+      CDSLandingPage.pageTitle should be("Hello from customs-financials-frontend")
     }
   }
 }
