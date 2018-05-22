@@ -11,7 +11,7 @@ val scalatestVersion = "3.0.4"
 lazy val EndToEndTest = config("endtoend") extend Test
 lazy val AcceptanceTest = config("acceptance") extend Test
 
-val testConfig = Seq(AcceptanceTest,EndToEndTest)
+val testConfig = Seq(AcceptanceTest,EndToEndTest,Test)
 
 lazy val customsAcceptanceTests = (project in file("."))
     .configs(testConfig: _*)
@@ -21,14 +21,14 @@ lazy val customsAcceptanceTests = (project in file("."))
       endtoendTestSettings
     )
 
-testOptions in Test ++= Seq(
-  Tests.Argument(TestFrameworks.ScalaTest, "-o"),
-  Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports")
-)
-
 lazy val allResolvers = resolvers ++= Seq(
   Resolver.bintrayRepo("hmrc", "releases"),
   Resolver.jcenterRepo
+)
+
+testOptions in Test ++= Seq(
+  Tests.Argument(TestFrameworks.ScalaTest, "-o"),
+  Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports")
 )
 
 
@@ -50,19 +50,23 @@ lazy val acceptanceTestSettings =
   inConfig(AcceptanceTest)(Defaults.testTasks) ++
     Seq(
       testOptions in AcceptanceTest := Seq(Tests.Filter(filterTestsOnPackageName("acceptance"))),
-      testOptions in AcceptanceTest += Tests.Argument(TestFrameworks.ScalaTest, "-oD"),
+      testOptions in AcceptanceTest ++= Seq(
+        Tests.Argument(TestFrameworks.ScalaTest, "-o"),
+        Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports")
+      ),
       fork in AcceptanceTest := false,
-      parallelExecution in AcceptanceTest := false,
-      addTestReportOption(AcceptanceTest, "acceptance-reports")
+      parallelExecution in AcceptanceTest := false
     )
 
 lazy val endtoendTestSettings =
   inConfig(EndToEndTest)(Defaults.testTasks) ++
     Seq(
       testOptions in EndToEndTest := Seq(Tests.Filter(filterTestsOnPackageName("endtoend"))),
-      testOptions in EndToEndTest += Tests.Argument(TestFrameworks.ScalaTest, "-oD"),
+      testOptions in EndToEndTest ++= Seq(
+        Tests.Argument(TestFrameworks.ScalaTest, "-o"),
+        Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports")
+      ),
       fork in EndToEndTest := false,
-      parallelExecution in EndToEndTest := false,
-      addTestReportOption(EndToEndTest, "e2e-test-reports")
+      parallelExecution in EndToEndTest := false
     )
 

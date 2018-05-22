@@ -85,6 +85,8 @@ trait Env extends Matchers with WebBrowser with Host{
       Env.proxy.setTrustAllServers(true)
       Env.proxy.start(Env.proxyPort)
       Env.options.addArguments(s"--proxy-server=localhost:${Env.proxyPort}")
+    } else {
+      Env.options.addArguments("--start-maximized")
     }
 
     val capabilities = DesiredCapabilities.chrome()

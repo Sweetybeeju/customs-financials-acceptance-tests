@@ -16,6 +16,6 @@ trait BaseSpec extends TestSpec with GivenWhenThen with LazyLogging{
   override def beforeEach(): Unit = {
     webDriver.manage().deleteAllCookies()
     counter = counter + 1
-    logger.info("******** Executing tests **********----> "+counter)
+    logger.debug("******** Executing tests **********----> "+counter)
   }
 }
