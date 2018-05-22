@@ -12,14 +12,8 @@ object CDSLandingPage extends WebPage with LazyLogging{
 
   def helloCDSText = find(xpath("//*[@id='content']/article/h1")).get
 
-  def navigateToCDSLandingPage() = {
-    logger.info("*********** user is on CDS landing page **************")
-    go to url
-    pageTitle should be(pageTitle)
-  }
-
   def checkCDSLandingPageHeader = {
-    logger.info("*********** checking for Hello from customs-financials-frontend !  **************")
+    logger.debug("*********** checking for Hello from customs-financials-frontend !  **************")
     waitForElement(By.xpath("//*[@id='content']/article/h1"))
     helloCDSText.isDisplayed
     helloCDSText.text shouldBe headerText

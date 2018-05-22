@@ -16,7 +16,7 @@ import scala.util.Try
 
 trait Host extends LazyLogging{
 
-  val hostIs = Option(System.getProperty("env")).getOrElse("qa")
+  val hostIs = Option(System.getProperty("env")).getOrElse("local")
   val turnOnProxy = Option(System.getProperty("turnOnProxy")).getOrElse("No")
   val proxyPort = Option(System.getProperty("proxyPort")).getOrElse("16688").toInt
 
