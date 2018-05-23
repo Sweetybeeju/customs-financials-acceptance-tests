@@ -39,12 +39,12 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
   "net.lightbody.bmp" % "browsermob-core" % "2.1.5",
-  "com.typesafe.play" %% "play-ahc-ws-standalone" % "2.0.0-M1"
+  "com.typesafe.play" %% "play-ahc-ws-standalone" % "2.0.0-M1",
+  "com.github.pureconfig" %% "pureconfig" % "0.9.1"
 )
 
-def filterTestsOnPackageName(rootPackage: String): (String => Boolean) = {
+def filterTestsOnPackageName(rootPackage: String): String => Boolean =
   testName => testName startsWith("uk.gov.hmrc." + rootPackage)
-}
 
 lazy val acceptanceTestSettings =
   inConfig(AcceptanceTest)(Defaults.testTasks) ++
