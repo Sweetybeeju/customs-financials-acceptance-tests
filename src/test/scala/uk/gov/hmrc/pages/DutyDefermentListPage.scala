@@ -11,8 +11,7 @@ import scala.concurrent.duration._
 
 class DutyDefermentListPage(implicit webdriver:WebDriver) extends WebPage with LazyLogging with ScalaFutures {
 
-//  override val url: String = s"${config.app.endpoint}/customs-financials/duty-deferment"
-  override val url: String = "http://localhost:3000/duty-deferment"
+  override val url: String = s"${config.app.endpoint}/customs-financials/duty-deferment"
 
   def selectStatement(i: Int): Array[Byte] = {
     captureLinkContent(find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) a")).get.underlying.getAttribute("href"))
