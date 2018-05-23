@@ -3,10 +3,10 @@ package uk.gov.hmrc.acceptance
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.{ChromeDriver, ChromeOptions}
 import org.openqa.selenium.remote.{BrowserType, CapabilityType, DesiredCapabilities}
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, MustMatchers, WordSpec}
+import org.scalatest._
 import uk.gov.hmrc.drivers.Profile
 
-trait AcceptanceSpec extends WordSpec with MustMatchers with BeforeAndAfterAll with BeforeAndAfterEach with Profile {
+trait AcceptanceSpec extends FeatureSpec with BeforeAndAfterAll with BeforeAndAfterEach with Profile with GivenWhenThen with Matchers{
 
   implicit val webDriver: WebDriver = createWebDriver
 
@@ -37,7 +37,7 @@ trait AcceptanceSpec extends WordSpec with MustMatchers with BeforeAndAfterAll w
     caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, config.browser.acceptSslCertificates)
     val opts = new ChromeOptions()
     if (Profile.proxy.isDefined) {
-      opts.addArguments(s"--proxy-server=localhost:${config.proxy.localPort}")
+      opts.addArguments(s"--proxy-server=localhost:${config.proxy.localPort.get}")
     }
     new ChromeDriver(opts.merge(caps))
   }

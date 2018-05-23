@@ -1,18 +1,18 @@
 package uk.gov.hmrc.pages
 
 import com.typesafe.scalalogging.LazyLogging
-import org.openqa.selenium.By
+import org.openqa.selenium.{By, WebDriver}
 import org.scalatest.concurrent.ScalaFutures
 import play.api.libs.ws.StandaloneWSRequest
-import uk.gov.hmrc.drivers.Env
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
-object DutyDefermentListPage extends WebPage with LazyLogging with ScalaFutures {
+class DutyDefermentListPage(implicit webdriver:WebDriver) extends WebPage with LazyLogging with ScalaFutures {
 
-  override val url: String = s"${Env.host}/customs-financials/duty-deferment"
+//  override val url: String = s"${config.app.endpoint}/customs-financials/duty-deferment"
+  override val url: String = "http://localhost:3000/duty-deferment"
 
   def selectStatement(i: Int): Array[Byte] = {
     captureLinkContent(find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) a")).get.underlying.getAttribute("href"))
@@ -40,5 +40,6 @@ object DutyDefermentListPage extends WebPage with LazyLogging with ScalaFutures 
   }
 
 }
+
 
 
