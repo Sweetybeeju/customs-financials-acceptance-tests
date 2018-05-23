@@ -43,8 +43,6 @@ trait Profile extends Logging {
   val activeProfile: String = Option(System.getProperty("test.profile")).getOrElse(defaultProfile)
 
   lazy val config: Config = pureconfig.loadConfigOrThrow[Config](activeProfile)
-  println("******  "+config)
-
 }
 
 object Profile extends Profile {
@@ -67,8 +65,8 @@ object Profile extends Profile {
     case _ => None
   }
 
-//  sys addShutdownHook {
-//    proxy.filter(_.isStarted).foreach(_.stop())
-//  }
+  sys addShutdownHook {
+    proxy.filter(_.isStarted).foreach(_.stop())
+  }
 
 }

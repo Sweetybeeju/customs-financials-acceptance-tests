@@ -8,7 +8,7 @@ class DutyDefermentPageSpec extends AcceptanceSpec {
 
   feature("Duty deferment file listing") {
     val ddl = new DutyDefermentListPage()
-    ignore("File can be downloaded") {
+    scenario("File can be downloaded") {
       Given("i am on the duty deferment page")
       ddl.navigateToPage
       When("i select a statement for a period")

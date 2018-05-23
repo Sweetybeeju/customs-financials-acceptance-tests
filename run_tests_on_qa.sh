@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-sbt -Dbrowser=chrome -Denv=qa acceptance:test
+sbt -Dtest.profile=qa-local acceptance:test

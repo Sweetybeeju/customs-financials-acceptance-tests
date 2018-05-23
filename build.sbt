@@ -55,7 +55,7 @@ lazy val acceptanceTestSettings =
         Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports")
       ),
       fork in AcceptanceTest := false,
-      parallelExecution in AcceptanceTest := false
+      parallelExecution in AcceptanceTest := true
     )
 
 lazy val endtoendTestSettings =
@@ -67,6 +67,6 @@ lazy val endtoendTestSettings =
         Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports")
       ),
       fork in EndToEndTest := false,
-      parallelExecution in EndToEndTest := false
+      parallelExecution in EndToEndTest := true
     )
 
