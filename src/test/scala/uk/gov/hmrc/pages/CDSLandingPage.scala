@@ -1,12 +1,11 @@
 package uk.gov.hmrc.pages
 
 import com.typesafe.scalalogging.LazyLogging
-import org.openqa.selenium.By
-import uk.gov.hmrc.drivers.Env
+import org.openqa.selenium.{By, WebDriver}
 
-object CDSLandingPage extends WebPage with LazyLogging{
+class CDSLandingPage(implicit webdriver:WebDriver) extends WebPage with LazyLogging{
 
-  override val url : String = s"${Env.host}/customs-financials/hello-world"
+  override val url : String = s"${config.app.endpoint}/customs-financials/hello-world"
 
   def helloCDSText = find(xpath("//*[@id='content']/article/h1")).get
 
@@ -17,3 +16,4 @@ object CDSLandingPage extends WebPage with LazyLogging{
   }
 
 }
+

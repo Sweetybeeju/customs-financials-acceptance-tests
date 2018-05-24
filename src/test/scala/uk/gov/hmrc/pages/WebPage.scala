@@ -10,17 +10,17 @@ import org.scalatest.Matchers
 import org.scalatest.concurrent.Eventually
 import org.scalatest.selenium.{Page, WebBrowser}
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
-import uk.gov.hmrc.drivers.Env
+import uk.gov.hmrc.drivers.{Config, Profile}
+//import uk.gov.hmrc.drivers.Env
 
-trait WebPage extends Page with WebBrowser with Matchers with Eventually {
-  implicit val webdriver: WebDriver = Env.driver
+abstract class WebPage(implicit webdriver : WebDriver) extends Page with WebBrowser with Matchers with Eventually with Profile{
 
   implicit val system: ActorSystem = ActorSystem()
   implicit val mat: ActorMaterializer = ActorMaterializer()
   val ws = StandaloneAhcWSClient()
 
   var fluentWait: FluentWait[WebDriver] = new FluentWait[WebDriver](webdriver)
-    .withTimeout(Env.waitTime, TimeUnit.SECONDS)
+    .withTimeout(3000, TimeUnit.SECONDS)
     .pollingEvery(1, TimeUnit.SECONDS)
     .ignoring(classOf[NoSuchElementException])
     .ignoring(classOf[StaleElementReferenceException])

@@ -38,12 +38,11 @@ trait Logging extends LazyLogging {
 
 trait Profile extends Logging {
 
-  val defaultProfile: String = "local"
+  val defaultProfile: String = "local-mac"
 
   val activeProfile: String = Option(System.getProperty("test.profile")).getOrElse(defaultProfile)
 
   lazy val config: Config = pureconfig.loadConfigOrThrow[Config](activeProfile)
-
 }
 
 object Profile extends Profile {
