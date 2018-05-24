@@ -3,8 +3,8 @@ package uk.gov.hmrc.pages
 import com.typesafe.scalalogging.LazyLogging
 import org.openqa.selenium.{By, WebDriver}
 import org.scalatest.concurrent.ScalaFutures
-import play.api.libs.ws.StandaloneWSRequest
 
+import scala.collection.JavaConversions
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -32,6 +32,11 @@ class DutyDefermentListPage(implicit webdriver: WebDriver) extends WebPage with 
       ws.url(url).get().map { r =>
         (r.bodyAsBytes.toArray, r.contentType)
       }, 10.seconds)
+  }
+
+  def listOfStatements = {
+    val statementList = JavaConversions.asScalaBuffer(webdriver.findElements(By.xpath("//*[@class='list list-bullet duty-deferment-statements']"))).toList
+    statementList
   }
 
 }

@@ -7,7 +7,9 @@ class DutyDefermentPageSpec extends AcceptanceSpec {
   val EXPECTED_TEST_FILE_SIZE_1_1MB = "1.1MB"
 
   feature("Duty deferment file listing") {
+
     val dutyDefermentPage = new DutyDefermentListPage()
+
     ignore("File can be downloaded") {
       Given("i am on the duty deferment page")
       dutyDefermentPage.navigateToPage
@@ -24,6 +26,7 @@ class DutyDefermentPageSpec extends AcceptanceSpec {
       When("i select a statement for a period")
       val statement: (Array[Byte], String) = dutyDefermentPage.selectStatement(1)
       (statement._1.length > 0) should be(true)
+      dutyDefermentPage.listOfStatements.nonEmpty should be(true)
       Then("the link text should be the file name")
       dutyDefermentPage.getFileName should be("dummy-duty-deferment-statement")
     }
