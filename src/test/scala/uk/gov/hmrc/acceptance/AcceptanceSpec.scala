@@ -10,13 +10,12 @@ trait AcceptanceSpec extends FeatureSpec with BeforeAndAfterAll with BeforeAndAf
 
   implicit val webDriver: WebDriver = createWebDriver
 
+  // ensure afterAll is *always* called, even if tests are ignored, to guarantee webdriver is quit
+  override val invokeBeforeAllAndAfterAllEvenIfNoTestsAreExpected = true
+
   def createWebDriver: WebDriver = config.browser.name match {
     case "chrome" => createChromeDriver
     case _ => throw new IllegalArgumentException(s"Unrecognised browser type: ${config.browser.name}")
-  }
-
-  override protected def beforeAll(): Unit = {
-    super.beforeAll()
   }
 
   override protected def afterAll(): Unit = {
