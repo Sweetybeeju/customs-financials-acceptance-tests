@@ -13,9 +13,8 @@ class DutyDefermentPageSpec extends AcceptanceSpec {
       ddl.navigateToPage
       When("i select a statement for a period")
       val statement: Array[Byte] = ddl.selectStatement(1)
-      (statement.length > 0) should be(true)
       Then("i am able to access the pdf file for that period")
-      ddl.sizeOfStatement(1) should be(EXPECTED_TEST_FILE_SIZE_1_1MB)
+      (statement.length > 0) should be(true)
     }
 
     ignore("Link text should be file name") {
