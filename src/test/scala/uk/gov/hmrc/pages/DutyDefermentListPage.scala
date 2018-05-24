@@ -9,11 +9,11 @@ import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
-class DutyDefermentListPage(implicit webdriver:WebDriver) extends WebPage with LazyLogging with ScalaFutures {
+class DutyDefermentListPage(implicit webdriver: WebDriver) extends WebPage with LazyLogging with ScalaFutures {
 
   override val url: String = s"${config.app.endpoint}/customs-financials/duty-deferment"
 
-  def selectStatement(i: Int): Array[Byte] = {
+  def selectStatement(i: Int): (Array[Byte], String) = {
     captureLinkContent(find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) a")).get.underlying.getAttribute("href"))
   }
 
@@ -22,19 +22,15 @@ class DutyDefermentListPage(implicit webdriver:WebDriver) extends WebPage with L
     find(linkText("dummy-duty-deferment-statement")).get.text
   }
 
-
-  def pdfHasBeenDownloaded: Boolean = ???
-
   def sizeOfStatement(i: Int): String = {
     val sizeInWords: String = find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) .file-size")).get.text
     sizeInWords
   }
 
-  private def captureLinkContent(url: String): Array[Byte] = {
+  private def captureLinkContent(url: String): (Array[Byte], String) = {
     Await.result(
       ws.url(url).get().map { r =>
-        var a: StandaloneWSRequest#Response = r
-        r.bodyAsBytes.toArray
+        (r.bodyAsBytes.toArray, r.contentType)
       }, 10.seconds)
   }
 
