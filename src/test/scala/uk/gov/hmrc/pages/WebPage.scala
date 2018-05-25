@@ -4,13 +4,14 @@ import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
+import com.typesafe.config.ConfigFactory
 import org.openqa.selenium.support.ui.{ExpectedConditions, FluentWait, WebDriverWait}
 import org.openqa.selenium.{By, StaleElementReferenceException, WebDriver, WebElement}
 import org.scalatest.Matchers
 import org.scalatest.concurrent.Eventually
 import org.scalatest.selenium.{Page, WebBrowser}
 import play.api.libs.ws.{DefaultWSProxyServer, StandaloneWSRequest, WSProxyServer}
-import play.api.libs.ws.ahc.StandaloneAhcWSClient
+import play.api.libs.ws.ahc.{AhcWSClientConfigFactory, StandaloneAhcWSClient}
 import uk.gov.hmrc.drivers.{Config, Profile}
 //import uk.gov.hmrc.drivers.Env
 
@@ -18,7 +19,9 @@ abstract class WebPage(implicit webdriver : WebDriver) extends Page with WebBrow
 
   implicit val system: ActorSystem = ActorSystem()
   implicit val mat: ActorMaterializer = ActorMaterializer()
-  private val ws = StandaloneAhcWSClient()
+  private val ws = StandaloneAhcWSClient(
+    config = AhcWSClientConfigFactory.forConfig(ConfigFactory.load())
+  )
 
   def wsUrl(url: String): StandaloneWSRequest = {
     val u = ws.url(url)
