@@ -7,6 +7,7 @@ import com.typesafe.scalalogging.LazyLogging
 import net.lightbody.bmp.BrowserMobProxyServer
 import net.lightbody.bmp.proxy.auth.AuthType
 import org.openqa.selenium.chrome.ChromeDriverService
+import play.api.libs.ws.{DefaultWSProxyServer, WSProxyServer}
 
 case class AppConfig(endpoint: String = "http://localhost:9876")
 
@@ -61,6 +62,18 @@ object Profile extends Profile {
       p.setTrustAllServers(true)
       p.start(config.proxy.localPort.get) // proxy is enabled: local port MUST be defined
       Some(p)
+    }
+    case _ => None
+  }
+
+  val wsProxy: Option[WSProxyServer] = config.proxy.enabled match {
+    case true => {
+      Some(DefaultWSProxyServer(
+        host = "localhost",
+        port = config.proxy.localPort.get,
+        principal = config.proxy.username,
+        password = config.proxy.password
+      ))
     }
     case _ => None
   }

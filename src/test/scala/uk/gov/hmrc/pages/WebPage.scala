@@ -9,6 +9,7 @@ import org.openqa.selenium.{By, StaleElementReferenceException, WebDriver, WebEl
 import org.scalatest.Matchers
 import org.scalatest.concurrent.Eventually
 import org.scalatest.selenium.{Page, WebBrowser}
+import play.api.libs.ws.{DefaultWSProxyServer, StandaloneWSRequest, WSProxyServer}
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
 import uk.gov.hmrc.drivers.{Config, Profile}
 //import uk.gov.hmrc.drivers.Env
@@ -17,7 +18,16 @@ abstract class WebPage(implicit webdriver : WebDriver) extends Page with WebBrow
 
   implicit val system: ActorSystem = ActorSystem()
   implicit val mat: ActorMaterializer = ActorMaterializer()
-  val ws = StandaloneAhcWSClient()
+  private val ws = StandaloneAhcWSClient()
+
+  def wsUrl(url: String): StandaloneWSRequest = {
+    val u = ws.url(url)
+    if (Profile.wsProxy.isDefined) {
+      u.withProxyServer(Profile.wsProxy.get)
+    } else {
+      u
+    }
+  }
 
   var fluentWait: FluentWait[WebDriver] = new FluentWait[WebDriver](webdriver)
     .withTimeout(3000, TimeUnit.SECONDS)

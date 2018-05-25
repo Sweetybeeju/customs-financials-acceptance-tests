@@ -31,7 +31,7 @@ class DutyDefermentListPage(implicit webdriver: WebDriver) extends WebPage with 
 
   private def captureLinkContent(url: String): DownloadedFile = {
     Await.result(
-      ws.url(url).get().map { r =>
+      wsUrl(url).get().map { r =>
         DownloadedFile(r)
       }, 10.seconds)
   }
