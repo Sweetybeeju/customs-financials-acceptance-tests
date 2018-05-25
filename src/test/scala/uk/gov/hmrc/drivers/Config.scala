@@ -56,7 +56,7 @@ object Profile extends Profile {
       val upstream = new InetSocketAddress(config.proxy.upstreamHost.get, config.proxy.upstreamPort.get) // proxy is enabled: upstream host and port MUST be defined
       p.setChainedProxy(upstream)
       if (config.proxy.username.isDefined && config.proxy.password.isDefined) {
-        p.chainedProxyAuthorization(config.proxy.username.get, config.proxy.username.get, AuthType.BASIC) // assume only BASIC auth supported for the time being
+        p.chainedProxyAuthorization(config.proxy.username.get, config.proxy.password.get, AuthType.BASIC) // assume only BASIC auth supported for the time being
       }
       p.setTrustAllServers(true)
       p.start(config.proxy.localPort.get) // proxy is enabled: local port MUST be defined
