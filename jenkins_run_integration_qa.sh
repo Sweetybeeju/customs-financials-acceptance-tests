@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-sbt -DturnOnProxy=yes -Denv=qa acceptance:test
+sbt -Dtest.profile=jenkins-acceptance acceptance:test
