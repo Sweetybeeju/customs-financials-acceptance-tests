@@ -10,10 +10,9 @@ import org.openqa.selenium.{By, StaleElementReferenceException, WebDriver, WebEl
 import org.scalatest.Matchers
 import org.scalatest.concurrent.Eventually
 import org.scalatest.selenium.{Page, WebBrowser}
-import play.api.libs.ws.{DefaultWSProxyServer, StandaloneWSRequest, WSProxyServer}
+import play.api.libs.ws.StandaloneWSRequest
 import play.api.libs.ws.ahc.{AhcWSClientConfigFactory, StandaloneAhcWSClient}
-import uk.gov.hmrc.drivers.{Config, Profile}
-//import uk.gov.hmrc.drivers.Env
+import uk.gov.hmrc.drivers.Profile
 
 abstract class WebPage(implicit webdriver : WebDriver) extends Page with WebBrowser with Matchers with Eventually with Profile{
 
