@@ -44,14 +44,14 @@ they are very straightforward and simple. Basically, you just need to specify th
 _suite_ to run and the _profile_ to use. For example:
 
 ```
-> sm --start CUSTOMS_FINANCIALS_FRONTEND -f
+> sm --start CUSTOMS_FINANCIALS_ALL -f
 > sbt -Dtest.profile=local acceptance:test
 ```
 
 This will execute the "acceptance" test suite using the "local" profile. Whereas:
 
 ```
-> sm --start CUSTOMS_FINANCIALS_FRONTEND -f
+> sm --start CUSTOMS_FINANCIALS_ALL -f
 > sbt -Dtest.profile=local-mac endtoend:test
 ```
 
