@@ -22,7 +22,7 @@ functionality is present and working.
 ### End-to-End Tests
 
 End-to-end tests are intended to prove a small number of key journeys within a
-representative deployment environment (e.g. staging) against real integration points.
+representative deployment environment (e.g. QA) against real integration points.
 The aim, therefore, is to provide confidence to the development team that deployment
 will work as expected.
 
@@ -43,11 +43,17 @@ the tests correctly in specific environments (e.g. locally or on jenkins). Howev
 they are very straightforward and simple. Basically, you just need to specify the
 _suite_ to run and the _profile_ to use. For example:
 
-```sbt -Dtest.profile=local acceptance:test```
+```
+> sm --start CUSTOMS_FINANCIALS_FRONTEND -f
+> sbt -Dtest.profile=local acceptance:test
+```
 
 This will execute the "acceptance" test suite using the "local" profile. Whereas:
 
-```sbt -Dtest.profile=local-mac endtoend:test```
+```
+> sm --start CUSTOMS_FINANCIALS_FRONTEND -f
+> sbt -Dtest.profile=local-mac endtoend:test
+```
 
 Will run the "end-to-end" test suite using the "local-mac" profile.
     
