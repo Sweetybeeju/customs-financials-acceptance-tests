@@ -22,6 +22,8 @@ object Driver {
   lazy val isLinux: Boolean = getOs.startsWith("Linux")
   lazy val linuxArch = systemProperties.getProperty("os.arch")
 
+  val proxy: BrowserMobProxy = new BrowserMobProxyServer()
+  val proxyPort = Option(System.getProperty("proxyPort")).getOrElse("11000").toInt
 
   if (isMac) {
     System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "./drivers/chrome/chromedriverMac")
@@ -71,23 +73,23 @@ object Driver {
     capabilities.setJavascriptEnabled(isJsEnabled)
     capabilities.setBrowserName(BrowserType.CHROME)
     capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true)
-
-    val proxy: BrowserMobProxy = new BrowserMobProxyServer()
-    addQaProxy(proxy, getProxyConfig, capabilities)
-
     val options = new ChromeOptions()
     options.addArguments("test-type")
     options.addArguments("--disable-gpu")
     if (headless) options.addArguments("--headless")
     if(turnOnProxy.equalsIgnoreCase("yes")){
-      addQaProxy(proxy,Some(proxyCred),capabilities)
-      options.addArguments(s"--proxy-server=http://${proxyCred.portNumber}")
+      if(proxy.isStarted) proxy.stop()
+      proxy.setConnectTimeout(15, TimeUnit.SECONDS)
+      val upstream_proxy = new InetSocketAddress("outbound-proxy-vip", 3128)
+      proxy.setChainedProxy(upstream_proxy)
+      proxy.chainedProxyAuthorization("jenkins", "$S4sJkIUkx&V", AuthType.BASIC)
+      proxy.setTrustAllServers(true)
+      proxy.start(proxyPort)
+      options.addArguments(s"--proxy-server=localhost:${proxyPort}")
     }
     options.merge(capabilities)
     new ChromeDriver(options)
   }
-
-  val proxyCred: ProxyConfig = ProxyConfig("jenkins","$S4sJkIUkx","",3128)
 
   case class ProxyConfig(username: String, password: String, host: String, portNumber: Int)
 
