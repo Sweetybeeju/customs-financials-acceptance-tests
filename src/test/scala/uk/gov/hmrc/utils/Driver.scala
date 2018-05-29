@@ -21,15 +21,12 @@ object Driver {
   lazy val isMac: Boolean = getOs.startsWith("Mac")
   lazy val isLinux: Boolean = getOs.startsWith("Linux")
   lazy val linuxArch = systemProperties.getProperty("os.arch")
-  val turnOnProxy = Option(System.getProperty("turnOnProxy")).getOrElse("No")
 
 
   if (isMac) {
     System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "./drivers/chrome/chromedriverMac")
-    System.setProperty("webdriver.gecko.driver", "./drivers/firefox/geckodriverMac")
   } else {
     System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "/usr/local/bin/chromedriver")
-    System.setProperty("webdriver.gecko.driver", "./drivers/firefox/geckodriver")
   }
 
   def newWebDriver(): Either[String, WebDriver] = {
@@ -68,6 +65,7 @@ object Driver {
   }
 
   private def createChromeDriver(headless: Boolean): WebDriver = {
+    val turnOnProxy: String = Option(System.getProperty("turnOnProxy")).getOrElse("No")
 
     val capabilities = DesiredCapabilities.chrome()
     capabilities.setJavascriptEnabled(isJsEnabled)
@@ -81,11 +79,15 @@ object Driver {
     options.addArguments("test-type")
     options.addArguments("--disable-gpu")
     if (headless) options.addArguments("--headless")
-    Option(System.getProperty("qa.proxy")).foreach { proxyConfig => options.addArguments(s"--proxy-server=http://$proxyConfig") }
+    if(turnOnProxy.equalsIgnoreCase("yes")){
+      addQaProxy(proxy,Some(proxyCred),capabilities)
+      options.addArguments(s"--proxy-server=http://${proxyCred.portNumber}")
+    }
     options.merge(capabilities)
-
     new ChromeDriver(options)
   }
+
+  val proxyCred: ProxyConfig = ProxyConfig("jenkins","$S4sJkIUkx","",3128)
 
   case class ProxyConfig(username: String, password: String, host: String, portNumber: Int)
 
