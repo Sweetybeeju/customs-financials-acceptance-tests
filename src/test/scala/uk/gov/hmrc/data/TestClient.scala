@@ -1,7 +1,7 @@
-package appName.data
+package uk.gov.hmrc.data
 
-import appName.utils.Environment
-import appName.utils.Configuration.environment
+import uk.gov.hmrc.utils.Environment
+import uk.gov.hmrc.utils.Configuration.environment
 
 case class TestClient(nino: String)
 

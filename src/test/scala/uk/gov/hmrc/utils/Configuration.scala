@@ -1,4 +1,4 @@
-package appName.utils
+package uk.gov.hmrc.utils
 
 
 class Configuration(val url: String, val BROWSER: String = System.getProperty("browser", "firefox"))

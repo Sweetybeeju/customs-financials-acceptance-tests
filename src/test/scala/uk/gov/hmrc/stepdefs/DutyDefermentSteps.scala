@@ -1,6 +1,6 @@
-package appName.stepdefs
+package uk.gov.hmrc.stepdefs
 
-import appName.pages.DutyDefermentPage
+import uk.gov.hmrc.pages.DutyDefermentPage
 
 class DutyDefermentSteps extends Steps{
 

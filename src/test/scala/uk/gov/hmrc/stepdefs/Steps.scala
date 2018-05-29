@@ -1,8 +1,8 @@
-package appName.stepdefs
+package uk.gov.hmrc.stepdefs
 
 import cats.syntax.either._
 import cucumber.api.scala.{EN, ScalaDsl}
-import appName.utils.Driver
+import uk.gov.hmrc.utils.Driver
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.WebDriverWait
 import org.scalatest.Matchers

@@ -1,7 +1,7 @@
-package appName.pages
+package uk.gov.hmrc.pages
 
-import appName.stepdefs.Steps
-import appName.utils.Configuration
+import uk.gov.hmrc.stepdefs.Steps
+import uk.gov.hmrc.utils.Configuration
 import org.openqa.selenium.{WebDriver, WebElement}
 import org.openqa.selenium.support.ui.{ExpectedCondition, WebDriverWait}
 import org.openqa.selenium.support.ui.ExpectedConditions._

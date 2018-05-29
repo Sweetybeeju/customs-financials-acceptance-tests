@@ -1,4 +1,4 @@
-package appName.utils
+package uk.gov.hmrc.utils
 
 import java.net.InetSocketAddress
 import java.util.concurrent.TimeUnit

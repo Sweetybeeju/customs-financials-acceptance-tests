@@ -1,4 +1,4 @@
-package appName.pages
+package uk.gov.hmrc.pages
 
 object DutyDefermentPage extends WebPage {
 
