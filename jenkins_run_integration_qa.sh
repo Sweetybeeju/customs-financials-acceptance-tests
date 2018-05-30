@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 
-sbt -Dtest.profile=jenkins-acceptance acceptance:test
+#! /bin/sh
+
+driver_path=/usr/local/bin/chromedriver
+sbt -Denvironment=qa -DturnOnProxy=yes 'test-only uk.gov.hmrc.runner.RunQa'

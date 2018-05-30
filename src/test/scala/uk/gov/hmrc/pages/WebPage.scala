@@ -1,54 +1,43 @@
 package uk.gov.hmrc.pages
 
-import java.util.concurrent.TimeUnit
+import uk.gov.hmrc.stepdefs.Steps
+import uk.gov.hmrc.utils.Configuration
+import org.openqa.selenium.{WebDriver, WebElement}
+import org.openqa.selenium.support.ui.{ExpectedCondition, WebDriverWait}
+import org.openqa.selenium.support.ui.ExpectedConditions._
+import org.scalatest.selenium.WebBrowser
+import org.scalatest.time.{Seconds, Span}
+import org.scalatest.{Assertions, Matchers}
+import scala.concurrent.duration.Duration
 
-import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
-import com.typesafe.config.ConfigFactory
-import org.openqa.selenium.support.ui.{ExpectedConditions, FluentWait, WebDriverWait}
-import org.openqa.selenium.{By, StaleElementReferenceException, WebDriver, WebElement}
-import org.scalatest.Matchers
-import org.scalatest.concurrent.Eventually
-import org.scalatest.selenium.{Page, WebBrowser}
-import play.api.libs.ws.StandaloneWSRequest
-import play.api.libs.ws.ahc.{AhcWSClientConfigFactory, StandaloneAhcWSClient}
-import uk.gov.hmrc.drivers.Profile
 
-abstract class WebPage(implicit webdriver : WebDriver) extends Page with WebBrowser with Matchers with Eventually with Profile{
+trait WebPage extends org.scalatest.selenium.Page with WebBrowser with Assertions with Matchers with Steps {
 
-  implicit val system: ActorSystem = ActorSystem()
-  implicit val mat: ActorMaterializer = ActorMaterializer()
-  private val ws = StandaloneAhcWSClient(
-    config = AhcWSClientConfigFactory.forConfig(ConfigFactory.load())
-  )
+  val relativeUrl = ""
+  val port = 9876
 
-  def wsUrl(url: String): StandaloneWSRequest = {
-    val u = ws.url(url)
-    if (Profile.wsProxy.isDefined) {
-      u.withProxyServer(Profile.wsProxy.get)
-    } else {
-      u
-    }
+  lazy val envUrl : String = Configuration.settings.url
+
+  implicit val duration: Duration = Span(2, Seconds)
+
+  def waitFor[T](condition: ExpectedCondition[T])(implicit wait: WebDriverWait): T = wait.until(condition)
+
+  def getUrl(port: Int) = if (envUrl.startsWith("http://local")) s"$envUrl:$port" else envUrl
+
+  def goToPage(): Unit = go to url
+
+  def getCurrentUrl()(implicit driver: WebDriver): String = driver.getCurrentUrl
+
+  def getPageContent()(implicit driver: WebDriver): String = driver.getPageSource
+
+  protected def pageHeader: Query = cssSelector("h1")
+
+  def pageHeaderText() = {
+    pageHeader.element.text
   }
 
-  var fluentWait: FluentWait[WebDriver] = new FluentWait[WebDriver](webdriver)
-    .withTimeout(3000, TimeUnit.SECONDS)
-    .pollingEvery(1, TimeUnit.SECONDS)
-    .ignoring(classOf[NoSuchElementException])
-    .ignoring(classOf[StaleElementReferenceException])
-
-  def assertPageTitle(title: String) = {
-    pageTitle shouldBe title
+  def waitForPageToLoad: WebElement = {
+    waitFor(visibilityOfElementLocated(pageHeader.by))
   }
-
-  def waitForElementVisibility(webelement: WebElement): WebElement = {
-    fluentWait.until(ExpectedConditions.visibilityOf(webelement))
-  }
-
-  def waitForElement(by: By): WebElement = {
-    new WebDriverWait(webdriver, 20).until(ExpectedConditions.visibilityOfElementLocated(by))
-  }
-
-  def navigateToPage: Unit = go to (url)
 
 }
