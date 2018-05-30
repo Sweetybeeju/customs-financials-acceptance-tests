@@ -16,14 +16,14 @@ object Driver {
 
   private val systemProperties = System.getProperties
 
-  def getOs = System.getProperty("os.name")
+  def getOs: String = System.getProperty("os.name")
 
   lazy val isMac: Boolean = getOs.startsWith("Mac")
   lazy val isLinux: Boolean = getOs.startsWith("Linux")
-  lazy val linuxArch = systemProperties.getProperty("os.arch")
 
   val proxy: BrowserMobProxy = new BrowserMobProxyServer()
-  val proxyPort = Option(System.getProperty("proxyPort")).getOrElse("11000").toInt
+  val proxyPort: Int = Option(System.getProperty("proxyPort")).getOrElse("11000").toInt
+  private val isJsEnabled: Boolean = true
 
   if (isMac) {
     System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "./drivers/chrome/chromedriverMac")
@@ -33,7 +33,6 @@ object Driver {
 
   def newWebDriver(): Either[String, WebDriver] = {
     val selectedDriver: Either[String, WebDriver] = Option(systemProperties.getProperty("browser", "chrome")).map(_.toLowerCase) match {
-      case Some("firefox") ⇒ Right(createFirefoxDriver())
       case Some("chrome") ⇒ Right(createChromeDriver(false))
       case Some("headless") ⇒ Right(createChromeDriver(true))
       case Some(other) ⇒ Left(s"Unrecognised browser: $other")
@@ -43,27 +42,8 @@ object Driver {
     selectedDriver.map { driver ⇒
       sys.addShutdownHook(driver.quit())
       driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS)
-
     }
     selectedDriver
-  }
-
-
-  private val isJsEnabled: Boolean = true
-
-  private def createFirefoxDriver(): WebDriver = {
-
-    val capabilities = DesiredCapabilities.firefox()
-    capabilities.setJavascriptEnabled(isJsEnabled)
-    capabilities.setBrowserName(BrowserType.FIREFOX)
-
-    val proxy: BrowserMobProxy = new BrowserMobProxyServer()
-    addQaProxy(proxy, getProxyConfig, capabilities)
-
-    val options = new FirefoxOptions()
-    options.merge(capabilities)
-
-    new FirefoxDriver(options)
   }
 
   private def createChromeDriver(headless: Boolean): WebDriver = {
@@ -90,26 +70,4 @@ object Driver {
     options.merge(capabilities)
     new ChromeDriver(options)
   }
-
-  case class ProxyConfig(username: String, password: String, host: String, portNumber: Int)
-
-  private def getProxyConfig: Option[ProxyConfig] = {
-    val proxySettingPattern = """(.+):(.+)@(.+):(\d+)""".r
-    Option(System.getProperty("qa.proxy")) map {
-      case proxySettingPattern(user, password, host, port) => ProxyConfig(user, password, host, port.toInt)
-      case _ => throw new RuntimeException("QA Proxy settings must be provided as username:password@proxyHost:proxyPortNumber")
-    }
-  }
-
-  private def addQaProxy(proxy: BrowserMobProxy, proxyConfigOption: Option[ProxyConfig], capabilities: DesiredCapabilities): Unit = {
-    proxyConfigOption foreach { proxyConfig =>
-      proxy.chainedProxyAuthorization(proxyConfig.username, proxyConfig.password, AuthType.BASIC)
-      proxy.setChainedProxy(new InetSocketAddress(proxyConfig.host, proxyConfig.portNumber))
-      proxy.setTrustAllServers(true)
-      proxy.start()
-      val seleniumProxy: Proxy = ClientUtil.createSeleniumProxy(proxy)
-      capabilities.setCapability(CapabilityType.PROXY, seleniumProxy)
-    }
-  }
-
 }

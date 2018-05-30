@@ -1,4 +1,3 @@
 #! /bin/sh
 
-driver_path=/usr/local/bin/chromedriver
-sbt -Denvironment=qa -Dbrowser=chrome -Dwebdriver.chrome.driver=${driver_path} clean test
+sbt -Denvironment=qa -Dbrowser=chrome 'test-only uk.gov.hmrc.runner.RunQa'

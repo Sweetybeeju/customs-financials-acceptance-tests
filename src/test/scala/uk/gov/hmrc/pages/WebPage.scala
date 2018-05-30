@@ -14,7 +14,7 @@ import scala.concurrent.duration.Duration
 trait WebPage extends org.scalatest.selenium.Page with WebBrowser with Assertions with Matchers with Steps {
 
   val relativeUrl = ""
-  val port = 8080
+  val port = 9876
 
   lazy val envUrl : String = Configuration.settings.url
 
@@ -38,18 +38,6 @@ trait WebPage extends org.scalatest.selenium.Page with WebBrowser with Assertion
 
   def waitForPageToLoad: WebElement = {
     waitFor(visibilityOfElementLocated(pageHeader.by))
-  }
-
-  //TODO: determine if I want to keep the below at page trait level. Could be better to define on a page by page basis as not always the same criteria
-
-  def expectedPageTitle: Option[String]
-
-  protected def pageTitleShouldBeCorrect(): Unit = {
-    expectedPageTitle.foreach(pageTitle shouldBe _)
-  }
-
-  def shouldBeLoaded(): Unit = {
-    pageTitleShouldBeCorrect()
   }
 
 }

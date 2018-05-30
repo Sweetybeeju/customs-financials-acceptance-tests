@@ -1,7 +1,13 @@
-@wip
-Feature: Duty Deferment Statement
+@wip @qa
 
-Scenario: Check duty deferment page title
+ Feature: Duty Deferment Statement
 
-  Given i am on the duty deferment page
+ Scenario: Check duty deferment page title
+  Given i am on the Duty deferment page
   Then the page title should be "Duty Deferment Statements"
+
+
+
+
+
+
