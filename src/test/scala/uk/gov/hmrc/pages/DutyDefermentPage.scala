@@ -8,8 +8,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 
-
-
 object DutyDefermentPage extends WebPage with ScalaFutures{
 
   override val url: String = getUrl(port) + "/customs-financials/duty-deferment"
@@ -23,7 +21,6 @@ object DutyDefermentPage extends WebPage with ScalaFutures{
     wsUrl(url).get().map{ r =>
       DownloadedFile(r)
     },10.seconds)
-
   }
 }
 

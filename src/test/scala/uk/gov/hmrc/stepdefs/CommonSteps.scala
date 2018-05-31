@@ -1,12 +1,14 @@
 package uk.gov.hmrc.stepdefs
 
 import cucumber.api.DataTable
-import uk.gov.hmrc.pages.{CDSLandingPage, DownloadedFile, DutyDefermentPage}
+import cucumber.api.scala.{EN, ScalaDsl}
+import org.scalatest.Matchers
+import uk.gov.hmrc.pages.{CDSLandingPage, DownloadedFile, DutyDefermentPage, WebPage}
 
 import scala.collection.JavaConversions
 
 
-class CommonSteps extends Steps {
+class CommonSteps extends ScalaDsl with EN with Matchers with WebPage{
 
   var statement: DownloadedFile = _
 
@@ -18,7 +20,7 @@ class CommonSteps extends Steps {
   }
 
   Then("""^the page title should be "([^"]*)"$""") { pagetitle: String =>
-    DutyDefermentPage.pageTitle should be(pagetitle)
+    DutyDefermentPage.getTitle should be(pagetitle)
   }
 
   When("""^i select the following statement to download$""") { months: DataTable =>

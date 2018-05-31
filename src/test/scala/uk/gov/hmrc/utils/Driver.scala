@@ -3,7 +3,6 @@ package uk.gov.hmrc.utils
 import java.net.InetSocketAddress
 import java.util.concurrent.TimeUnit
 
-import cats.syntax.either._
 import net.lightbody.bmp.proxy.auth.AuthType
 import net.lightbody.bmp.{BrowserMobProxy, BrowserMobProxyServer}
 import org.openqa.selenium.WebDriver
@@ -31,27 +30,26 @@ object Driver {
     System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "/usr/local/bin/chromedriver")
   }
 
-  def newWebDriver(): Either[String, WebDriver] = {
-    val selectedDriver: Either[String, WebDriver] = Option(systemProperties.getProperty("browser", "chrome")).map(_.toLowerCase) match {
-      case Some("chrome") ⇒ Right(createChromeDriver(false))
-      case Some("headless") ⇒ Right(createChromeDriver(true))
-      case Some(other) ⇒ Left(s"Unrecognised browser: $other")
-      case None ⇒ Left("No browser set")
-    }
+  val instance: WebDriver = newWebDriver()
 
-    selectedDriver.map { driver ⇒
-      sys.addShutdownHook(driver.quit())
-      driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS)
-    }
-    selectedDriver
+  def newWebDriver(): WebDriver = {
+    val browserProperty = systemProperties.getProperty("browser", "chrome")
+    val driver = createBrowser(browserProperty)
+    driver
   }
 
-  private def createChromeDriver(headless: Boolean): WebDriver = {
+  private def createBrowser(browserProperty: String): WebDriver = {
+    browserProperty match {
+      case "chrome" => createChromeDriver()
+      case _ => throw new IllegalArgumentException(s"browser type $browserProperty not recognised ")
+    }
+  }
+
+  private def createChromeDriver(): WebDriver = {
 
     val options = new ChromeOptions()
     options.addArguments("test-type")
     options.addArguments("--disable-gpu")
-    if (headless) options.addArguments("--headless")
     if (turnOnProxy.equalsIgnoreCase("yes")) {
       if (proxy.isStarted) proxy.stop()
       proxy.setConnectTimeout(15, TimeUnit.SECONDS)
@@ -73,9 +71,11 @@ object Driver {
     new ChromeDriver(options)
   }
 
-  val wsProxy: Option[WSProxyServer] = if(turnOnProxy.contains("yes")){
-    Some(DefaultWSProxyServer(host = "localhost",port=3128,principal = Some("jenkins"),password = Some("$S4sJkIUkx")))
+  val wsProxy: Option[WSProxyServer] = if (turnOnProxy.contains("yes")) {
+    Some(DefaultWSProxyServer(host = "localhost", port = 3128, principal = Some("jenkins"), password = Some("$S4sJkIUkx")))
   } else {
     None
   }
+
+  sys.addShutdownHook(instance.quit())
 }
