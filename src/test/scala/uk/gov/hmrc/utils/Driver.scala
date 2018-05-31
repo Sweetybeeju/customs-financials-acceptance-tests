@@ -48,10 +48,6 @@ object Driver {
 
   private def createChromeDriver(headless: Boolean): WebDriver = {
 
-    val capabilities = DesiredCapabilities.chrome()
-    capabilities.setJavascriptEnabled(isJsEnabled)
-    capabilities.setBrowserName(BrowserType.CHROME)
-    capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true)
     val options = new ChromeOptions()
     options.addArguments("test-type")
     options.addArguments("--disable-gpu")
@@ -66,6 +62,13 @@ object Driver {
       proxy.start(proxyPort)
       options.addArguments(s"--proxy-server=localhost:${proxyPort}")
     }
+
+    val capabilities = DesiredCapabilities.chrome()
+    capabilities.setJavascriptEnabled(isJsEnabled)
+    capabilities.setBrowserName(BrowserType.CHROME)
+    capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true)
+
+    options.addArguments("--incognito")
     options.merge(capabilities)
     new ChromeDriver(options)
   }

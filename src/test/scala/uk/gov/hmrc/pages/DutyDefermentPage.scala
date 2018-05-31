@@ -23,6 +23,7 @@ object DutyDefermentPage extends WebPage with ScalaFutures{
     wsUrl(url).get().map{ r =>
       DownloadedFile(r)
     },10.seconds)
+
   }
 }
 
