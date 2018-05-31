@@ -4,13 +4,12 @@ import java.net.InetSocketAddress
 import java.util.concurrent.TimeUnit
 
 import cats.syntax.either._
-import org.openqa.selenium.{Proxy, WebDriver}
-import org.openqa.selenium.chrome.{ChromeDriver, ChromeDriverService, ChromeOptions}
-import org.openqa.selenium.firefox.{FirefoxDriver, FirefoxOptions}
-import org.openqa.selenium.remote.{BrowserType, CapabilityType, DesiredCapabilities}
-import net.lightbody.bmp.client.ClientUtil
 import net.lightbody.bmp.proxy.auth.AuthType
 import net.lightbody.bmp.{BrowserMobProxy, BrowserMobProxyServer}
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.chrome.{ChromeDriver, ChromeDriverService, ChromeOptions}
+import org.openqa.selenium.remote.{BrowserType, CapabilityType, DesiredCapabilities}
+import play.api.libs.ws.{DefaultWSProxyServer, WSProxyServer}
 
 object Driver {
 
@@ -23,6 +22,7 @@ object Driver {
 
   val proxy: BrowserMobProxy = new BrowserMobProxyServer()
   val proxyPort: Int = Option(System.getProperty("proxyPort")).getOrElse("11000").toInt
+  val turnOnProxy: String = Option(System.getProperty("turnOnProxy")).getOrElse("No")
   private val isJsEnabled: Boolean = true
 
   if (isMac) {
@@ -47,7 +47,6 @@ object Driver {
   }
 
   private def createChromeDriver(headless: Boolean): WebDriver = {
-    val turnOnProxy: String = Option(System.getProperty("turnOnProxy")).getOrElse("No")
 
     val capabilities = DesiredCapabilities.chrome()
     capabilities.setJavascriptEnabled(isJsEnabled)
@@ -57,8 +56,8 @@ object Driver {
     options.addArguments("test-type")
     options.addArguments("--disable-gpu")
     if (headless) options.addArguments("--headless")
-    if(turnOnProxy.equalsIgnoreCase("yes")){
-      if(proxy.isStarted) proxy.stop()
+    if (turnOnProxy.equalsIgnoreCase("yes")) {
+      if (proxy.isStarted) proxy.stop()
       proxy.setConnectTimeout(15, TimeUnit.SECONDS)
       val upstream_proxy = new InetSocketAddress("outbound-proxy-vip", 3128)
       proxy.setChainedProxy(upstream_proxy)
@@ -69,5 +68,11 @@ object Driver {
     }
     options.merge(capabilities)
     new ChromeDriver(options)
+  }
+
+  val wsProxy: Option[WSProxyServer] = if(turnOnProxy.contains("yes")){
+    Some(DefaultWSProxyServer(host = "localhost",port=3128,principal = Some("jenkins"),password = Some("$S4sJkIUkx")))
+  } else {
+    None
   }
 }

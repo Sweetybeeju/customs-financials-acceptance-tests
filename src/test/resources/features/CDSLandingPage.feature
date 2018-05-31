@@ -1,4 +1,4 @@
-@wip @qa
+@qa
 
 Feature: Cds Landing Page
 

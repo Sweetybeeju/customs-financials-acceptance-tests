@@ -1,17 +1,26 @@
 package uk.gov.hmrc.pages
 
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import com.typesafe.config.ConfigFactory
 import uk.gov.hmrc.stepdefs.Steps
-import uk.gov.hmrc.utils.Configuration
+import uk.gov.hmrc.utils.{Configuration, Driver}
 import org.openqa.selenium.{WebDriver, WebElement}
 import org.openqa.selenium.support.ui.{ExpectedCondition, WebDriverWait}
 import org.openqa.selenium.support.ui.ExpectedConditions._
 import org.scalatest.selenium.WebBrowser
 import org.scalatest.time.{Seconds, Span}
 import org.scalatest.{Assertions, Matchers}
+import play.api.libs.ws.StandaloneWSRequest
+import play.api.libs.ws.ahc.{AhcWSClientConfigFactory, StandaloneAhcWSClient}
+import scala.concurrent.ExecutionContext.Implicits.global
+import java.util.concurrent.TimeUnit
+
+
 import scala.concurrent.duration.Duration
 
 
-trait WebPage extends org.scalatest.selenium.Page with WebBrowser with Assertions with Matchers with Steps {
+trait WebPage extends org.scalatest.selenium.Page with WebBrowser with Assertions with Matchers with Steps{
 
   val relativeUrl = ""
   val port = 9876
@@ -19,6 +28,21 @@ trait WebPage extends org.scalatest.selenium.Page with WebBrowser with Assertion
   lazy val envUrl : String = Configuration.settings.url
 
   implicit val duration: Duration = Span(2, Seconds)
+
+  implicit val system: ActorSystem = ActorSystem()
+  implicit val mat: ActorMaterializer = ActorMaterializer()
+  private val ws = StandaloneAhcWSClient(
+    config = AhcWSClientConfigFactory.forConfig(ConfigFactory.load())
+  )
+
+  def wsUrl(url: String): StandaloneWSRequest = {
+    val u = ws.url(url)
+    if (Driver.turnOnProxy.contains("yes")) {
+      u.withProxyServer(Driver.wsProxy.get)
+    } else {
+      u
+    }
+  }
 
   def waitFor[T](condition: ExpectedCondition[T])(implicit wait: WebDriverWait): T = wait.until(condition)
 
