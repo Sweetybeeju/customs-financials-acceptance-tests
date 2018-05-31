@@ -33,12 +33,12 @@ trait Steps extends ScalaDsl with EN with Matchers {
   }
 
   After { _ ⇒
-    _driver.foreach(_.quit())
     _driver.foreach(_ =>
       if(Driver.turnOnProxy.contains("yes")){
-        Driver.proxy.abort()
+        Driver.proxy.stop()
       }
     )
+    _driver.foreach(_.quit())
     _driver = None
   }
 
