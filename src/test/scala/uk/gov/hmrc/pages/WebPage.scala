@@ -5,22 +5,24 @@ import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
 import uk.gov.hmrc.stepdefs.Steps
 import uk.gov.hmrc.utils.{Configuration, Driver}
-import org.openqa.selenium.{WebDriver, WebElement}
-import org.openqa.selenium.support.ui.{ExpectedCondition, WebDriverWait}
+import org.openqa.selenium.{By, WebDriver, WebElement}
+import org.scalatest.selenium.Page
+import org.openqa.selenium.support.ui.{ExpectedCondition, ExpectedConditions, WebDriverWait}
 import org.openqa.selenium.support.ui.ExpectedConditions._
 import org.scalatest.selenium.WebBrowser
 import org.scalatest.time.{Seconds, Span}
 import org.scalatest.{Assertions, Matchers}
 import play.api.libs.ws.StandaloneWSRequest
 import play.api.libs.ws.ahc.{AhcWSClientConfigFactory, StandaloneAhcWSClient}
+
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import java.util.concurrent.TimeUnit
-
 
 import scala.concurrent.duration.Duration
 
 
-trait WebPage extends org.scalatest.selenium.Page with WebBrowser with Assertions with Matchers with Steps{
+trait WebPage extends Page with WebBrowser with Assertions with Matchers with Steps{
 
   val relativeUrl = ""
   val port = 9876

@@ -1,5 +1,6 @@
 package uk.gov.hmrc.pages
 
+import org.openqa.selenium.By
 import org.scalatest.concurrent.ScalaFutures
 import play.api.libs.ws.StandaloneWSResponse
 
@@ -18,11 +19,20 @@ object DutyDefermentPage extends WebPage with ScalaFutures{
     captureLinkContent(find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) a")).get.underlying.getAttribute("href"))
   }
 
+  def getFileName(i: Int): String = {
+    find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) a")).get.text
+  }
+
   private def captureLinkContent(url: String) : DownloadedFile = {
   Await.result(
     wsUrl(url).get().map{ r =>
       DownloadedFile(r)
     },10.seconds)
+  }
+
+  def sizeOfStatement(i: Int): String = {
+    val sizeInWords: String = find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) .file-size")).get.text
+    sizeInWords
   }
 }
 
