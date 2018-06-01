@@ -1,22 +1,47 @@
 package uk.gov.hmrc.pages
 
-import org.openqa.selenium.By
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import com.typesafe.config.ConfigFactory
 import org.scalatest.concurrent.ScalaFutures
-import play.api.libs.ws.StandaloneWSResponse
+import play.api.libs.ws.ahc.{AhcWSClientConfigFactory, StandaloneAhcWSClient}
+import play.api.libs.ws.{StandaloneWSRequest, StandaloneWSResponse}
+import uk.gov.hmrc.utils.Driver
 
 import scala.concurrent.Await
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
-
-
-
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object DutyDefermentPage extends WebPage with ScalaFutures{
 
   override val url: String = getUrl(port) + "/customs-financials/duty-deferment"
 
-  def selectStatement(i: Int): DownloadedFile = {
-    captureLinkContent(find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) a")).get.underlying.getAttribute("href"))
+  var cap : DownloadedFile = _
+
+  implicit val system: ActorSystem = ActorSystem()
+  implicit val mat: ActorMaterializer = ActorMaterializer()
+  private val ws = StandaloneAhcWSClient(
+    config = AhcWSClientConfigFactory.forConfig(ConfigFactory.load())
+  )
+
+  def wsUrl(url: String): StandaloneWSRequest = {
+    val u = ws.url(url)
+    if (Driver.turnOnProxy.contains("yes")) {
+      u.withProxyServer(Driver.wsProxy.get)
+    } else {
+      u
+    }
+  }
+
+  def selectStatement(month: String): DownloadedFile = {
+    val listOfElements: List[DutyDefermentPage.Element] =findAll(xpath("//ul[@class='list list-bullet duty-deferment-statements']/li/a")).toList
+    for (el <- listOfElements){
+     val href: String =  el.attribute("href").get
+      if(href.contains(month)){
+        cap = captureLinkContent(href)
+      }
+    }
+    cap
   }
 
   def getFileName(i: Int): String = {
@@ -54,6 +79,7 @@ object DownloadedFile {
     val hdr = resp.header("Content-Disposition").getOrElse("").split(";").take(2).map(_.trim).toList
     val disposition = hdr(0)
     val name: String = hdr(1).split("=").take(2).map(_.trim).toList(1).replaceAll("\"", "")
+    println("hdr "+hdr(1))
     DownloadedFile(data, mimeType, disposition, name)
   }
 

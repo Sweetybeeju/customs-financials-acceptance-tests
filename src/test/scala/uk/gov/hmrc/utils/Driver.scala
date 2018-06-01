@@ -38,11 +38,6 @@ object Driver {
       case Some(other) ⇒ Left(s"Unrecognised browser: $other")
       case None ⇒ Left("No browser set")
     }
-
-    selectedDriver.map { driver ⇒
-      sys.addShutdownHook(driver.quit())
-      driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS)
-    }
     selectedDriver
   }
 
@@ -55,17 +50,17 @@ object Driver {
     val options = new ChromeOptions()
     options.addArguments("test-type")
     options.addArguments("--disable-gpu")
-    if (headless) options.addArguments("--headless")
-    if (turnOnProxy.equalsIgnoreCase("yes")) {
-      if (proxy.isStarted) proxy.stop()
-      proxy.setConnectTimeout(15, TimeUnit.SECONDS)
-      val upstream_proxy = new InetSocketAddress("outbound-proxy-vip", 3128)
-      proxy.setChainedProxy(upstream_proxy)
-      proxy.chainedProxyAuthorization("jenkins", "$S4sJkIUkx&V", AuthType.BASIC)
-      proxy.setTrustAllServers(true)
-      proxy.start(proxyPort)
-      options.addArguments(s"--proxy-server=localhost:${proxyPort}")
-    }
+//    if (headless) options.addArguments("--headless")
+//    if (turnOnProxy.equalsIgnoreCase("yes")) {
+//      if (proxy.isStarted) proxy.stop()
+//      proxy.setConnectTimeout(15, TimeUnit.SECONDS)
+//      val upstream_proxy = new InetSocketAddress("outbound-proxy-vip", 3128)
+//      proxy.setChainedProxy(upstream_proxy)
+//      proxy.chainedProxyAuthorization("jenkins", "$S4sJkIUkx&V", AuthType.BASIC)
+//      proxy.setTrustAllServers(true)
+//      proxy.start(proxyPort)
+//      options.addArguments(s"--proxy-server=localhost:${proxyPort}")
+//    }
     options.merge(capabilities)
     new ChromeDriver(options)
   }

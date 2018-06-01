@@ -31,20 +31,6 @@ trait WebPage extends Page with WebBrowser with Assertions with Matchers with St
 
   implicit val duration: Duration = Span(2, Seconds)
 
-  implicit val system: ActorSystem = ActorSystem()
-  implicit val mat: ActorMaterializer = ActorMaterializer()
-  private val ws = StandaloneAhcWSClient(
-    config = AhcWSClientConfigFactory.forConfig(ConfigFactory.load())
-  )
-
-  def wsUrl(url: String): StandaloneWSRequest = {
-    val u = ws.url(url)
-    if (Driver.turnOnProxy.contains("yes")) {
-      u.withProxyServer(Driver.wsProxy.get)
-    } else {
-      u
-    }
-  }
 
   def waitFor[T](condition: ExpectedCondition[T])(implicit wait: WebDriverWait): T = wait.until(condition)
 

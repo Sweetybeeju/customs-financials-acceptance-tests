@@ -24,9 +24,7 @@ class CommonSteps extends Steps {
   When("""^I select the following statement to download$""") { months: DataTable =>
     val listOfMonths: List[String] = JavaConversions.asScalaBuffer(months.asList(classOf[String])).toList
     for (month <- listOfMonths) {
-      month match {
-        case "April" => statement = DutyDefermentPage.selectStatement(1)
-      }
+        statement = DutyDefermentPage.selectStatement(month)
     }
   }
 

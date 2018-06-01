@@ -1,11 +1,10 @@
-@qa
-
+@wip @qa
 Feature: Cds Landing Page
 
-Scenario: Check CDS landing page title
+  Scenario: Check CDS landing page title
 
-Given i am on the Cds landing page
-Then the page title should be "Hello from customs-financials-frontend"
+    Given I am on the Cds landing page
+    Then the page title should be "hello outside world from customs-financials-frontend !"
 
 
 
