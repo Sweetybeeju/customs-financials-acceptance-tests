@@ -8,7 +8,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 
-object DutyDefermentPage extends WebPage with ScalaFutures{
+object DutyDefermentPage extends WebPage with ScalaFutures {
 
   override val url: String = getUrl(port) + "/customs-financials/duty-deferment"
 
@@ -16,11 +16,13 @@ object DutyDefermentPage extends WebPage with ScalaFutures{
     captureLinkContent(find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) a")).get.underlying.getAttribute("href"))
   }
 
-  private def captureLinkContent(url: String) : DownloadedFile = {
-  Await.result(
-    wsUrl(url).get().map{ r =>
-      DownloadedFile(r)
-    },10.seconds)
+  private def captureLinkContent(url: String): DownloadedFile = {
+    //  Await.result(
+    //    wsUrl(url).get().map{ r =>
+    //      DownloadedFile(r)
+    //    },10.seconds)
+    //  }
+    DownloadedFile(Array.fill(5000)(0.toByte), "application/pdf", "", "File.pdf")
   }
 }
 
