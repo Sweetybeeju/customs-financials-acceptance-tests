@@ -50,7 +50,9 @@ object Driver {
     val options = new ChromeOptions()
     options.addArguments("test-type")
     options.addArguments("--disable-gpu")
+    println(s"### turnOnProxy: ${turnOnProxy}")
     if (turnOnProxy.equalsIgnoreCase("yes")) {
+      println("### Proxy is turned ON")
       if (proxy.isStarted) proxy.stop()
       proxy.setConnectTimeout(15, TimeUnit.SECONDS)
       val upstream_proxy = new InetSocketAddress("outbound-proxy-vip", 3128)
