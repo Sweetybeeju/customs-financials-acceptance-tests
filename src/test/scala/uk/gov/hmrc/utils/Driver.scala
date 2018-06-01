@@ -59,8 +59,8 @@ object Driver {
       proxy.setChainedProxy(upstream_proxy)
       proxy.chainedProxyAuthorization("jenkins", "$S4sJkIUkx&V", AuthType.BASIC)
       proxy.setTrustAllServers(true)
-      proxy.start(proxyPort)
-      options.addArguments(s"--proxy-server=localhost:${proxyPort}")
+      //proxy.start(proxyPort)
+      //options.addArguments(s"--proxy-server=localhost:${proxyPort}")
     }
 
     val capabilities = DesiredCapabilities.chrome()
