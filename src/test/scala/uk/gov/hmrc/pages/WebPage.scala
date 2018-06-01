@@ -45,7 +45,7 @@ trait WebPage extends WebBrowser with Assertions with Matchers with StartUpTearD
   def getUrl(port: Int) = if (envUrl.startsWith("http://local")) s"$envUrl:$port" else envUrl
 
   def goToPage(): Unit = {
-    webdriver.manage().deleteCookies()
+    webDriver.manage().deleteAllCookies()
     go to url
   }
 
