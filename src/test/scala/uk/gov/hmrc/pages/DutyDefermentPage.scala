@@ -2,6 +2,7 @@ package uk.gov.hmrc.pages
 
 import org.scalatest.concurrent.ScalaFutures
 import play.api.libs.ws.StandaloneWSResponse
+import uk.gov.hmrc.utils.WSClient
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -18,7 +19,7 @@ object DutyDefermentPage extends WebPage with ScalaFutures{
 
   private def captureLinkContent(url: String) : DownloadedFile = {
   Await.result(
-    wsUrl(url).get().map{ r =>
+    WSClient.wsUrl(url).get().map{ r =>
       DownloadedFile(r)
     },10.seconds)
   }
