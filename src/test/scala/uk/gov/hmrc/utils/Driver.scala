@@ -56,10 +56,11 @@ object Driver {
       if (proxy.isStarted) proxy.stop()
       proxy.setConnectTimeout(15, TimeUnit.SECONDS)
       val upstream_proxy = new InetSocketAddress("outbound-proxy-vip", 3128)
+      println("This is the upstream proxy "+upstream_proxy)
       proxy.setChainedProxy(upstream_proxy)
       proxy.chainedProxyAuthorization("jenkins", "$S4sJkIUkx&V", AuthType.BASIC)
       proxy.setTrustAllServers(true)
-      proxy.start(proxyPort)
+      proxy.start(16633)
       options.addArguments(s"--proxy-server=localhost:${proxyPort}")
     }
 

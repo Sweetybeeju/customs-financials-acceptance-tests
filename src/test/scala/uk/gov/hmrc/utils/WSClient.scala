@@ -22,5 +22,4 @@ object WSClient {
       u
     }
   }
-
 }
