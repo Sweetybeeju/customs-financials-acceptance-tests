@@ -74,7 +74,7 @@ object Driver {
   }
 
   val wsProxy: Option[WSProxyServer] = if (turnOnProxy.contains("yes")) {
-    Some(DefaultWSProxyServer(host = "localhost", port = 3128, principal = Some("jenkins"), password = Some("$S4sJkIUkx")))
+    Some(DefaultWSProxyServer(host = "localhost", port = 16633, principal = Some("jenkins"), password = Some("$S4sJkIUkx")))
   } else {
     None
   }
