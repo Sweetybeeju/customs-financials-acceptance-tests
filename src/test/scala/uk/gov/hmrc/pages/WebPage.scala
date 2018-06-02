@@ -15,7 +15,7 @@ import uk.gov.hmrc.utils.{Configuration, Driver, StartUpTearDown}
 import scala.concurrent.duration.Duration
 
 
-trait WebPage extends WebBrowser with Assertions with Matchers with StartUpTearDown{
+abstract class WebPage extends WebBrowser with Assertions with Matchers with StartUpTearDown{
 
   val relativeUrl = ""
   val port = 9876

@@ -8,7 +8,7 @@ import uk.gov.hmrc.pages.{CDSLandingPage, DownloadedFile, DutyDefermentPage, Web
 import scala.collection.JavaConversions
 
 
-class CommonSteps extends ScalaDsl with EN with Matchers with WebPage{
+class CommonSteps extends WebPage with ScalaDsl with EN with Matchers {
 
   var statement: DownloadedFile = _
 
