@@ -20,7 +20,7 @@ object Driver {
   lazy val isLinux: Boolean = getOs.startsWith("Linux")
 
   val proxy: BrowserMobProxy = new BrowserMobProxyServer()
-  val proxyPort: Int = Option(System.getProperty("proxyPort")).getOrElse("11000").toInt
+  val proxyPort: Int = Option(System.getProperty("proxyPort")).getOrElse("16633").toInt
   val turnOnProxy: String = Option(System.getProperty("turnOnProxy")).getOrElse("No")
   private val isJsEnabled: Boolean = true
 
@@ -60,8 +60,8 @@ object Driver {
       proxy.setChainedProxy(upstream_proxy)
       proxy.chainedProxyAuthorization("jenkins", "$S4sJkIUkx&V", AuthType.BASIC)
       proxy.setTrustAllServers(true)
-      proxy.start(16633)
-      options.addArguments(s"--proxy-server=localhost:${16633}")
+      proxy.start(proxyPort)
+      options.addArguments(s"--proxy-server=localhost:${proxyPort}")
     }
 
     val capabilities = DesiredCapabilities.chrome()
@@ -72,12 +72,6 @@ object Driver {
     options.addArguments("--incognito")
     options.merge(capabilities)
     new ChromeDriver(options)
-  }
-
-  val wsProxy: Option[WSProxyServer] = if (turnOnProxy.contains("yes")) {
-    Some(DefaultWSProxyServer(host = "localhost", port = 16633, principal = Some("jenkins"), password = Some("$S4sJkIUkx")))
-  } else {
-    None
   }
 
   sys.addShutdownHook(instance.quit())
