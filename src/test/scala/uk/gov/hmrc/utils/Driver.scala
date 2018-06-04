@@ -8,7 +8,6 @@ import net.lightbody.bmp.{BrowserMobProxy, BrowserMobProxyServer}
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.{ChromeDriver, ChromeDriverService, ChromeOptions}
 import org.openqa.selenium.remote.{BrowserType, CapabilityType, DesiredCapabilities}
-import play.api.libs.ws.{DefaultWSProxyServer, WSProxyServer}
 
 object Driver {
 
@@ -50,13 +49,10 @@ object Driver {
     val options = new ChromeOptions()
     options.addArguments("test-type")
     options.addArguments("--disable-gpu")
-    println(s"### turnOnProxy: ${turnOnProxy}")
     if (turnOnProxy.equalsIgnoreCase("yes")) {
-      println("### Proxy is turned ON")
       if (proxy.isStarted) proxy.stop()
       proxy.setConnectTimeout(15, TimeUnit.SECONDS)
       val upstream_proxy = new InetSocketAddress("outbound-proxy-vip", 3128)
-      println("This is the upstream proxy "+upstream_proxy)
       proxy.setChainedProxy(upstream_proxy)
       proxy.chainedProxyAuthorization("jenkins", "$S4sJkIUkx&V", AuthType.BASIC)
       proxy.setTrustAllServers(true)

@@ -1,18 +1,25 @@
 @wip @qa
+Feature: Duty Deferment Statements
 
- Feature: Duty Deferment Statements
+  Scenario: File can be downloaded
+    Given I am on the Duty deferment page
+    When I select the following statement to download
+      | June |
+    Then I am able to access the pdf file that was downloaded
 
- Scenario: File can be downloaded
-      Given i am on the Duty deferment page
-      When i select the following statement to download
-      |May|
-      Then i am able to access the pdf file that was downlaoded
+  Scenario: Link text should be the same as the filename
+    Given I am on the Duty deferment page
+    When I select the following statement to download
+      | April |
+    Then the link text should be the same as the filename
 
-Scenario: File can be downloaded - 2
-    Given i am on the Duty deferment page
-    When i select the following statement to download
-    |May|
-    Then i am able to access the pdf file that was downlaoded
+
+  Scenario: Understand the size of each PDF
+    Given I am on the Duty deferment page
+    When I select the following statement to download
+      | April |
+    Then I am able to understand the size of each PDF
+
 
 
 

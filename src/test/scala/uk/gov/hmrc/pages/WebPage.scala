@@ -1,21 +1,16 @@
 package uk.gov.hmrc.pages
 
-import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
-import com.typesafe.config.ConfigFactory
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.{ExpectedCondition, WebDriverWait}
 import org.scalatest.selenium.WebBrowser
 import org.scalatest.time.{Seconds, Span}
 import org.scalatest.{Assertions, Matchers}
-import play.api.libs.ws.StandaloneWSRequest
-import play.api.libs.ws.ahc.{AhcWSClientConfigFactory, StandaloneAhcWSClient}
-import uk.gov.hmrc.utils.{Configuration, Driver, StartUpTearDown}
+import uk.gov.hmrc.utils.{Configuration, StartUpTearDown}
 
 import scala.concurrent.duration.Duration
 
 
-abstract class WebPage extends WebBrowser with Assertions with Matchers with StartUpTearDown{
+trait WebPage extends WebBrowser with Assertions with Matchers with StartUpTearDown{
 
   val relativeUrl = ""
   val port = 9876

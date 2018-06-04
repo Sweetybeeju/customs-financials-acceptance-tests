@@ -12,7 +12,7 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers {
 
   var statement: DownloadedFile = _
 
-  Given("""^i am on the (.*)$""") { page: String =>
+  Given("""^I am on the (.*)$""") { page: String =>
     page match {
       case "Duty deferment page" => DutyDefermentPage.goToPage()
       case "Cds landing page" => CDSLandingPage.goToPage()
@@ -23,17 +23,24 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers {
     DutyDefermentPage.getTitle should be(pagetitle)
   }
 
-  When("""^i select the following statement to download$""") { months: DataTable =>
+  When("""^I select the following statement to download$""") { months: DataTable =>
     val listOfMonths: List[String] = JavaConversions.asScalaBuffer(months.asList(classOf[String])).toList
     for (month <- listOfMonths) {
-      month match {
-        case "May" => statement = DutyDefermentPage.selectStatement(1)
-      }
+        statement = DutyDefermentPage.selectStatement(month)
     }
   }
 
-  Then("""^i am able to access the pdf file that was downlaoded$""") { () =>
+  Then("""^I am able to access the pdf file that was downloaded$""") { () =>
     statement.mimeType should be("application/pdf")
     (statement.data.length > 0) should be(true)
+  }
+
+  Then("""^the link text should be the same as the filename$""") { () =>
+//    DutyDefermentPage.getFileName(1) should be(statement.name)
+  }
+
+  Then("""^I am able to understand the size of each PDF$""") { () =>
+    println("****    "+statement.sizeDescription)
+//    DutyDefermentPage.sizeOfStatement(1) should be(statement.sizeDescription)
   }
 }
