@@ -23,10 +23,12 @@ object Driver {
   val turnOnProxy: String = Option(System.getProperty("turnOnProxy")).getOrElse("No")
   private val isJsEnabled: Boolean = true
 
-  if (isMac) {
-    System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "./drivers/chrome/chromedriverMac")
-  } else {
-    System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "/usr/local/bin/chromedriver")
+  if (!Option(System.getProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY)).map(_.length > 0).getOrElse(false)) {
+    if (isMac) {
+      System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "./drivers/chrome/chromedriverMac")
+    } else {
+      System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "/usr/local/bin/chromedriver")
+    }
   }
 
   val instance: WebDriver = newWebDriver()
@@ -49,6 +51,7 @@ object Driver {
     val options = new ChromeOptions()
     options.addArguments("test-type")
     options.addArguments("--disable-gpu")
+
     if (turnOnProxy.equalsIgnoreCase("yes")) {
       if (proxy.isStarted) proxy.stop()
       proxy.setConnectTimeout(15, TimeUnit.SECONDS)
