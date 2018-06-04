@@ -3,14 +3,11 @@ package uk.gov.hmrc.utils
 import java.net.InetSocketAddress
 import java.util.concurrent.TimeUnit
 
-import cats.syntax.either._
-import org.openqa.selenium.{Proxy, WebDriver}
-import org.openqa.selenium.chrome.{ChromeDriver, ChromeDriverService, ChromeOptions}
-import org.openqa.selenium.firefox.{FirefoxDriver, FirefoxOptions}
-import org.openqa.selenium.remote.{BrowserType, CapabilityType, DesiredCapabilities}
-import net.lightbody.bmp.client.ClientUtil
 import net.lightbody.bmp.proxy.auth.AuthType
 import net.lightbody.bmp.{BrowserMobProxy, BrowserMobProxyServer}
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.chrome.{ChromeDriver, ChromeDriverService, ChromeOptions}
+import org.openqa.selenium.remote.{BrowserType, CapabilityType, DesiredCapabilities}
 
 object Driver {
 
@@ -22,7 +19,8 @@ object Driver {
   lazy val isLinux: Boolean = getOs.startsWith("Linux")
 
   val proxy: BrowserMobProxy = new BrowserMobProxyServer()
-  val proxyPort: Int = Option(System.getProperty("proxyPort")).getOrElse("11000").toInt
+  val proxyPort: Int = Option(System.getProperty("proxyPort")).getOrElse("16633").toInt
+  val turnOnProxy: String = Option(System.getProperty("turnOnProxy")).getOrElse("No")
   private val isJsEnabled: Boolean = true
 
   if (!Option(System.getProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY)).map(_.length > 0).getOrElse(false)) {
@@ -33,32 +31,27 @@ object Driver {
     }
   }
 
-  def newWebDriver(): Either[String, WebDriver] = {
-    val selectedDriver: Either[String, WebDriver] = Option(systemProperties.getProperty("browser", "chrome")).map(_.toLowerCase) match {
-      case Some("chrome") ⇒ Right(createChromeDriver(false))
-      case Some("headless") ⇒ Right(createChromeDriver(true))
-      case Some(other) ⇒ Left(s"Unrecognised browser: $other")
-      case None ⇒ Left("No browser set")
-    }
+  val instance: WebDriver = newWebDriver()
 
-    selectedDriver.map { driver ⇒
-      sys.addShutdownHook(driver.quit())
-      driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS)
-    }
-    selectedDriver
+  def newWebDriver(): WebDriver = {
+    val browserProperty = systemProperties.getProperty("browser", "chrome")
+    val driver = createBrowser(browserProperty)
+    driver
   }
 
-  private def createChromeDriver(headless: Boolean): WebDriver = {
-    val turnOnProxy: String = Option(System.getProperty("turnOnProxy")).getOrElse("No")
+  private def createBrowser(browserProperty: String): WebDriver = {
+    browserProperty match {
+      case "chrome" => createChromeDriver()
+      case _ => throw new IllegalArgumentException(s"browser type $browserProperty not recognised ")
+    }
+  }
 
-    val capabilities = DesiredCapabilities.chrome()
-    capabilities.setJavascriptEnabled(isJsEnabled)
-    capabilities.setBrowserName(BrowserType.CHROME)
-    capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true)
+  private def createChromeDriver(): WebDriver = {
+
     val options = new ChromeOptions()
     options.addArguments("test-type")
     options.addArguments("--disable-gpu")
-    if (headless) options.addArguments("--headless")
+
     if (turnOnProxy.equalsIgnoreCase("yes")) {
       if (proxy.isStarted) proxy.stop()
       proxy.setConnectTimeout(15, TimeUnit.SECONDS)
@@ -69,7 +62,16 @@ object Driver {
       proxy.start(proxyPort)
       options.addArguments(s"--proxy-server=localhost:${proxyPort}")
     }
+
+    val capabilities = DesiredCapabilities.chrome()
+    capabilities.setJavascriptEnabled(isJsEnabled)
+    capabilities.setBrowserName(BrowserType.CHROME)
+    capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true)
+
+    options.addArguments("--incognito")
     options.merge(capabilities)
     new ChromeDriver(options)
   }
+
+  sys.addShutdownHook(instance.quit())
 }
