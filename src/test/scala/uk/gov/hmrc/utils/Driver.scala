@@ -25,10 +25,12 @@ object Driver {
   val proxyPort: Int = Option(System.getProperty("proxyPort")).getOrElse("11000").toInt
   private val isJsEnabled: Boolean = true
 
-  if (isMac) {
-    System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "./drivers/chrome/chromedriverMac")
-  } else {
-    System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "/usr/local/bin/chromedriver")
+  if (!Option(System.getProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY)).map(_.length > 0).getOrElse(false)) {
+    if (isMac) {
+      System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "./drivers/chrome/chromedriverMac")
+    } else {
+      System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, "/usr/local/bin/chromedriver")
+    }
   }
 
   def newWebDriver(): Either[String, WebDriver] = {
@@ -57,8 +59,8 @@ object Driver {
     options.addArguments("test-type")
     options.addArguments("--disable-gpu")
     if (headless) options.addArguments("--headless")
-    if(turnOnProxy.equalsIgnoreCase("yes")){
-      if(proxy.isStarted) proxy.stop()
+    if (turnOnProxy.equalsIgnoreCase("yes")) {
+      if (proxy.isStarted) proxy.stop()
       proxy.setConnectTimeout(15, TimeUnit.SECONDS)
       val upstream_proxy = new InetSocketAddress("outbound-proxy-vip", 3128)
       proxy.setChainedProxy(upstream_proxy)
