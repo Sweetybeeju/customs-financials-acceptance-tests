@@ -2,13 +2,15 @@ package uk.gov.hmrc.stepdefs
 
 import cucumber.api.DataTable
 import cucumber.api.scala.{EN, ScalaDsl}
+import org.openqa.selenium.By
 import org.scalatest.Matchers
 import uk.gov.hmrc.pages.{CDSLandingPage, DownloadedFile, DutyDefermentPage, WebPage}
+import uk.gov.hmrc.utils.StartUpTearDown
 
 import scala.collection.JavaConversions
 
 
-class CommonSteps extends WebPage with ScalaDsl with EN with Matchers {
+class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown{
 
   var statement: DownloadedFile = _
 
@@ -23,11 +25,8 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers {
     DutyDefermentPage.getTitle should be(pagetitle)
   }
 
-  When("""^I select the following statement to download$""") { months: DataTable =>
-    val listOfMonths: List[String] = JavaConversions.asScalaBuffer(months.asList(classOf[String])).toList
-    for (month <- listOfMonths) {
-        statement = DutyDefermentPage.selectStatement(month)
-    }
+  When("""^I select the month '(.*)' statement to download$""") { month: String  =>
+    statement = DutyDefermentPage.selectStatement(month)
   }
 
   Then("""^I am able to access the pdf file that was downloaded$""") { () =>
@@ -35,12 +34,12 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers {
     (statement.data.length > 0) should be(true)
   }
 
-  Then("""^the link text should be the same as the filename$""") { () =>
-//    DutyDefermentPage.getFileName(1) should be(statement.name)
+  Then("""^the link text for period '(.*)' should be the same as the filename$""") { (linkText: String) =>
+     val link = s"$linkText-2018.pdf"
+     DutyDefermentPage.getFileName(link) should be(statement.name)
   }
 
-  Then("""^I am able to understand the size of each PDF$""") { () =>
-    println("****    "+statement.sizeDescription)
-//    DutyDefermentPage.sizeOfStatement(1) should be(statement.sizeDescription)
+  Then("""^I am able to understand the size of the PDF for '(.*)'$""") { (month:String) =>
+    "9.6 kB" should be(statement.sizeDescription)
   }
 }

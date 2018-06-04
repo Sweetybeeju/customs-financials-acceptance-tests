@@ -1,5 +1,6 @@
 package uk.gov.hmrc.pages
 
+
 import org.scalatest.concurrent.ScalaFutures
 import play.api.libs.ws.StandaloneWSResponse
 import uk.gov.hmrc.utils.WSClient
@@ -8,38 +9,28 @@ import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
-object DutyDefermentPage extends WebPage with ScalaFutures{
+object DutyDefermentPage extends WebPage with ScalaFutures {
 
   override val url: String = getUrl(port) + "/customs-financials/duty-deferment"
+  var str = ""
 
-  var cap : DownloadedFile = _
-
-  def selectStatement(month: String): DownloadedFile = {
-    val listOfElements: List[DutyDefermentPage.Element] =findAll(xpath("//ul[@class='list list-bullet duty-deferment-statements']/li/a")).toList
-    for (el <- listOfElements){
-     val href: String =  el.attribute("href").get
-      if(href.contains(month)){
-        cap = captureLinkContent(href)
-      }
-    }
-    cap
+  def selectStatement(month: String): (DownloadedFile) = {
+    val href = find(xpath(s"//ul[@class='list list-bullet duty-deferment-statements']/li/a[contains(text(), '$month-2018.pdf')]")).get.underlying.getAttribute("href")
+    captureLinkContent(href)
   }
 
-  def getFileName(i: Int): String = {
-    find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) a")).get.text
+  def getFileName(link: String): String = {
+    val fileName = find(linkText(link)).get.text
+    fileName
   }
 
-  private def captureLinkContent(url: String) : DownloadedFile = {
-  Await.result(
-    WSClient.wsUrl(url).get().map{ r =>
-      DownloadedFile(r)
-    },10.seconds)
+  private def captureLinkContent(url: String): DownloadedFile = {
+    Await.result(
+      WSClient.wsUrl(url).get().map { r =>
+        DownloadedFile(r)
+      }, 10.seconds)
   }
 
-  def sizeOfStatement(i: Int): String = {
-    val sizeInWords: String = find(cssSelector(s".duty-deferment-statements li:nth-child(${i}) .file-size")).get.text
-    sizeInWords
-  }
 }
 
 case class DownloadedFile(data: Array[Byte], mimeType: String, disposition: String, name: String) {
