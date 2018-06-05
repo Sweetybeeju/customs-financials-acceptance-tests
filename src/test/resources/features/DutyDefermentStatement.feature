@@ -1,4 +1,4 @@
-@qa
+@qa @acceptance
 Feature: Duty Deferment Statements
 
   Scenario Outline: File can be downloaded

@@ -1,4 +1,4 @@
-@qa
+@qa @acceptance
 Feature: Cds Landing Page
 
   Scenario: Check CDS landing page title
