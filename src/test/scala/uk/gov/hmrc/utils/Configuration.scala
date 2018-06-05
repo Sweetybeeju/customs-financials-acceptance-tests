@@ -11,7 +11,7 @@ object Environment extends Enumeration {
 object Configuration {
 
   lazy val environment: Environment.Name = {
-    val environmentProperty = Option(System.getProperty("environment")).getOrElse("qa").toLowerCase
+    val environmentProperty = Option(System.getProperty("environment")).getOrElse("local").toLowerCase
     environmentProperty match {
       case "local" => Environment.Local
       case "qa" => Environment.Qa

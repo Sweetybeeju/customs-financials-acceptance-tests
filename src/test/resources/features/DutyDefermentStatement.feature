@@ -1,4 +1,4 @@
-@qa @wip
+@qa
 Feature: Duty Deferment Statements
 
   Scenario Outline: File can be downloaded
@@ -25,10 +25,4 @@ Feature: Duty Deferment Statements
     Then I am able to understand the size of the PDF for '<month>'
     Examples:
       | month |
-      | April |
-
-
-
-
-
-
+      | May |

@@ -1,14 +1,9 @@
 package uk.gov.hmrc.stepdefs
 
-import cucumber.api.DataTable
 import cucumber.api.scala.{EN, ScalaDsl}
-import org.openqa.selenium.By
 import org.scalatest.Matchers
-import uk.gov.hmrc.pages.{CDSLandingPage, DownloadedFile, DutyDefermentPage, WebPage}
+import uk.gov.hmrc.pages._
 import uk.gov.hmrc.utils.StartUpTearDown
-
-
-import scala.collection.JavaConversions
 
 
 class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown{
@@ -42,6 +37,6 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with Start
   }
 
   Then("""^I am able to understand the size of the PDF for '(.*)'$""") { (month:String) =>
-    "9.6 kB" should be(statement.sizeDescription)
+    DutyDefermentPage.getFileSize(month) should be(statement.sizeDescription)
   }
 }

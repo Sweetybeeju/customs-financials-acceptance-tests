@@ -31,6 +31,11 @@ object DutyDefermentPage extends WebPage with ScalaFutures {
       }, 10.seconds)
   }
 
+  def getFileSize(month: String) = {
+    val element: String = find(xpath(s"//ul[@class='list list-bullet duty-deferment-statements']/li[@data-statement-name='$month-2018.pdf']/span")).get.text
+    element
+  }
+
 }
 
 case class DownloadedFile(data: Array[Byte], mimeType: String, disposition: String, name: String) {
