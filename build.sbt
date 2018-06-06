@@ -32,5 +32,6 @@ libraryDependencies ++= Seq(
   "org.typelevel" %% "cats" % "0.9.0",
   "com.novocode" % "junit-interface" % "0.11" % "test",
   "net.lightbody.bmp" % "browsermob-core" % "2.1.5",
-  "com.typesafe.play" %% "play-ahc-ws-standalone" % "2.0.0-M1"
+  "com.typesafe.play" %% "play-ahc-ws-standalone" % "2.0.0-M1",
+  "com.typesafe.play" %% "play-json" % "2.3.10"
 )

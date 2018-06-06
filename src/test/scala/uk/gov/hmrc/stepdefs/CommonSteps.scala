@@ -10,11 +10,12 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with Start
 
   var statement: DownloadedFile = _
 
-  Given("""^I am on the (.*)$""") { page: String =>
+  Given("""^I am on the (.*) page$""") { page: String =>
     page match {
-      case "Duty deferment page" => DutyDefermentPage.goToPage()
-      case "Cds landing page" => CDSLandingPage.goToPage()
-      case "Dashboard page" => DashboardPage.goToPage()
+      case "Duty deferment" => DutyDefermentPage.goToPage()
+      case "Cds landing" => CDSLandingPage.goToPage()
+      case "Dashboard" => DashboardPage.goToPage()
+      case "Auth login stub" => AuthLoginPage.goToPage()
     }
   }
 
@@ -39,4 +40,17 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with Start
   Then("""^I am able to understand the size of the PDF for '(.*)'$""") { (month:String) =>
     DutyDefermentPage.getFileSize(month) should be(statement.sizeDescription)
   }
+
+  When("""^I enter the (.*) user details on the auth page$"""){ userType:String =>
+    AuthLoginPage.loginAuth(userType)
+  }
+
+  When("""^click submit$"""){ () =>
+
+  }
+
+  Then("""^I should be on the Dashboard page$"""){ () =>
+
+  }
+
 }
