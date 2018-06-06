@@ -1,4 +1,4 @@
-@wip
+@wip @acceptance
 
 Feature: Authenticating users
 

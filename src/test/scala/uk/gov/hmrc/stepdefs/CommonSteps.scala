@@ -46,11 +46,12 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with Start
   }
 
   When("""^click submit$"""){ () =>
-
+    click on className("button")
   }
 
   Then("""^I should be on the Dashboard page$"""){ () =>
-
+    DashboardPage.goToPage()
+    DashboardPage.getH1Text should be("user@test.com you are logged in")
   }
 
 }
