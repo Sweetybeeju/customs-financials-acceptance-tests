@@ -12,7 +12,6 @@ import scala.concurrent.duration._
 object DutyDefermentPage extends WebPage with ScalaFutures {
 
   override val url: String = getUrl(port) + "/customs-financials/duty-deferment"
-  var str = ""
 
   def selectStatement(month: String): (DownloadedFile) = {
     val href = find(xpath(s"//ul[@class='list list-bullet duty-deferment-statements']/li/a[contains(text(), '$month-2018.pdf')]")).get.underlying.getAttribute("href")

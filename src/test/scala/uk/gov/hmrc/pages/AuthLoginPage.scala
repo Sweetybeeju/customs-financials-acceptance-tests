@@ -1,11 +1,14 @@
 package uk.gov.hmrc.pages
 
+import uk.gov.hmrc.utils.Configuration
+
 
 object AuthLoginPage extends AuthLoginPage
 
 trait AuthLoginPage extends WebPage {
 
-  override val url = "http://localhost:9949/auth-login-stub/gg-sign-in"
+  override val url: String = Configuration.settings.AUTH_LOGIN_STUB
+
 
   def loginAuth(userType:String) = {
     val userdata = CDSTestDataModel.testData(s"$userType.json")

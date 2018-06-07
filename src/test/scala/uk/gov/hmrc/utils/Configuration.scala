@@ -1,12 +1,7 @@
 package uk.gov.hmrc.utils
 
 
-class Configuration(val url: String, val BROWSER: String = System.getProperty("browser", "firefox"))
-
-object Environment extends Enumeration {
-  type Name = Value
-  val Local, Dev, Qa, Staging = Value
-}
+case class Configuration(url: String,AUTH_LOGIN_STUB:String)
 
 object Configuration {
 
@@ -27,21 +22,35 @@ object Configuration {
     environment match {
       case Environment.Local =>
         new Configuration(
-          url = "http://localhost"
+          url = "http://localhost",
+          AUTH_LOGIN_STUB = "http://localhost:9949/auth-login-stub/gg-sign-in"
         )
       case Environment.Dev =>
         new Configuration(
-          url = "http://localhost"
+          url = "http://localhost",
+          AUTH_LOGIN_STUB = "http://localhost:9949/auth-login-stub/gg-sign-in"
+
         )
       case Environment.Qa =>
         new Configuration(
-          url = "https://www.qa.tax.service.gov.uk"
+          url = "https://www.qa.tax.service.gov.uk",
+          AUTH_LOGIN_STUB = "https://www.qa.tax.service.gov.uk/auth-login-stub/gg-sign-in"
+
         )
       case Environment.Staging =>
         new Configuration(
-          url = "https://www.staging.tax.service.gov.uk"
+          url = "https://www.staging.tax.service.gov.uk",
+          AUTH_LOGIN_STUB = "https://www.staging.tax.service.gov.uk/auth-login-stub/gg-sign-in"
+
         )
       case _ => throw new IllegalArgumentException(s"Environment '$environment' not known")
     }
   }
 }
+
+
+object Environment extends Enumeration {
+  type Name = Value
+  val Local, Dev, Qa, Staging = Value
+}
+
