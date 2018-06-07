@@ -40,4 +40,6 @@ trait WebPage extends WebBrowser with Assertions with Matchers with StartUpTearD
 
   def getTitle = pageTitle
 
+  def isCurrentPage: Boolean = false
+
 }

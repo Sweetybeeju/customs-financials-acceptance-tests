@@ -1,10 +1,9 @@
-@wip @acceptance
-
+@acceptance
 Feature: Authenticating users
 
-Scenario: User accesing dashboard page through Auth
-Given I am on the Auth login stub page
-When I enter the valid user details on the auth page
-And click submit
-Then I should be on the Dashboard page
-
+  Scenario: user accessing secured page
+    Given I am not signed in
+    When I attempt to navigate to the Dashboard page
+    Then I am redirected to the Sign In page
+    When I sign in as valid user
+    Then I am redirected to the Dashboard page

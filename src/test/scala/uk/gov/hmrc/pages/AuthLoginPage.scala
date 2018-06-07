@@ -10,9 +10,9 @@ trait AuthLoginPage extends WebPage {
   override val url: String = Configuration.settings.AUTH_LOGIN_STUB
 
 
-  def loginAuth(userType:String) = {
+  def loginAuth(userType:String, continueUrl: String) = {
     val userdata = CDSTestDataModel.testData(s"$userType.json")
     textField("authorityId").value = userdata.pid
-    textField("redirectionUrl").value = "http://localhost:9876/customs-financials/"
+    textField("redirectionUrl").value = continueUrl
   }
 }

@@ -21,10 +21,6 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with Start
     getTitle should be(pagetitle)
   }
 
-  When("""^I enter the (.*) user details on the auth page$"""){ userType:String =>
-    AuthLoginPage.loginAuth(userType)
-  }
-
   When("""^click submit$"""){ () =>
     click on className("button")
   }

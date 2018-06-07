@@ -7,7 +7,7 @@ import uk.gov.hmrc.utils.StartUpTearDown
 
 class DashBoardSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown{
 
-  Given("""^I attempt to navigate to the Dashboard page directly without Auth$"""){ () =>
+  Given("""^I attempt to navigate to the Dashboard page$"""){ () =>
     DashboardPage.goToPage()
   }
 

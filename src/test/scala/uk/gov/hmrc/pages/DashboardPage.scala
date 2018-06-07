@@ -7,4 +7,5 @@ object DashboardPage extends WebPage {
     find(xpath("//*[@id='content']/article/h1")).get.text
   }
 
+  override def isCurrentPage: Boolean = getTitle == "Hello from customs-financials-frontend"
 }
