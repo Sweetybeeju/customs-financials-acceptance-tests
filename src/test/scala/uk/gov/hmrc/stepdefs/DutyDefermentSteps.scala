@@ -2,12 +2,18 @@ package uk.gov.hmrc.stepdefs
 
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.scalatest.Matchers
-import uk.gov.hmrc.pages.{DownloadedFile, DutyDefermentPage, WebPage}
+import uk.gov.hmrc.pages.{DownloadedFile, DutyDefermentPage, FeatureSwitch, WebPage}
 import uk.gov.hmrc.utils.StartUpTearDown
+
 
 class DutyDefermentSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown{
 
   var statement: DownloadedFile = _
+
+  Given("""^the duty deferment feature is enabled$""") { () =>
+    FeatureSwitch.enableDutyDeferment
+
+  }
 
   When("""^I select the month '(.*)' statement to download$""") { month: String  =>
     statement = DutyDefermentPage.selectStatement(month)
