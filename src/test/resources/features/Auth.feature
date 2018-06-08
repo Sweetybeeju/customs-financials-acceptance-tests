@@ -1,4 +1,4 @@
-@acceptance
+@acceptance @wip
 Feature: Authenticating users
 
   Scenario: user accessing secured page
