@@ -10,11 +10,6 @@ class DutyDefermentSteps extends WebPage with ScalaDsl with EN with Matchers wit
 
   var statement: DownloadedFile = _
 
-  Given("""^the duty deferment feature is enabled$""") { () =>
-    FeatureSwitch.enableDutyDeferment
-
-  }
-
   When("""^I select the month '(.*)' statement to download$""") { month: String  =>
     statement = DutyDefermentPage.selectStatement(month)
   }

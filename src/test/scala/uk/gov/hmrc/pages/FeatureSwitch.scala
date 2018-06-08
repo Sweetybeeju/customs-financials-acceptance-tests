@@ -1,9 +1,9 @@
 package uk.gov.hmrc.pages
 
-object FeatureSwitch extends WebPage {
-  override val url = "https://www.qa.tax.service.gov.uk/customs-financials/test-only/feature/duty-deferment/enable"
+case class FeatureSwitch(featureName: String) extends WebPage {
+  override val url = s"https://www.qa.tax.service.gov.uk/customs-financials/test-only/feature/$featureName/enable"
 
-  def enableDutyDeferment() = {
+  def enableFeature = {
     for (i <- 1 to 5) {
       go to url
     }

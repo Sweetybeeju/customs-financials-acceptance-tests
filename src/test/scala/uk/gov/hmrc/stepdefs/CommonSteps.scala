@@ -8,6 +8,10 @@ import uk.gov.hmrc.utils.StartUpTearDown
 
 class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown{
 
+  Given("""^the (.*) feature is enabled$""") { (feature: String) =>
+    FeatureSwitch(feature).enableFeature
+  }
+
   Given("""^I am on the (.*) page$""") { page: String =>
     page match {
       case "Duty deferment" => DutyDefermentPage.goToPage()
