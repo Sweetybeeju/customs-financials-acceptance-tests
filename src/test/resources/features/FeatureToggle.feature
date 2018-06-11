@@ -1,9 +1,11 @@
 @qa @acceptance
-Feature: Testing feature disable endpoint
+Feature: Testing disable feature toggle
 
-  Background:
+  Scenario: Disable Duty deferment using feature toggle
     Given the duty deferment feature is disabled
-
-  Scenario:
-    Given I am on the Duty deferment page
+    When I am on the Duty deferment page
     Then page not found is returned
+
+
+
+
