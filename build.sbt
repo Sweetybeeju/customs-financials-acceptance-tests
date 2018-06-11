@@ -22,7 +22,7 @@ resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/release
 
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % ScalatestVersion % "test" excludeAll( ExclusionRule(organization = "org.seleniumhq.selenium") ),
+  "org.scalatest" %% "scalatest" % ScalatestVersion % "test" excludeAll ExclusionRule(organization = "org.seleniumhq.selenium"),
   "org.seleniumhq.selenium" % "selenium-java" % "3.7.1" % "test",
   "com.google.guava" % "guava" % "23.0",
   "org.pegdown" % "pegdown" % "1.6.0" % "test",
