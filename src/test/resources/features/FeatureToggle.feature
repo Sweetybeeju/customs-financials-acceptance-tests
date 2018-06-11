@@ -1,4 +1,4 @@
-@qa @acceptance @wip
+@qa @acceptance
 Feature: Testing feature disable endpoint
 
   Background:

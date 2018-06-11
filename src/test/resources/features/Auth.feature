@@ -1,4 +1,4 @@
-@acceptance
+@acceptance @qa
 Feature: Authenticating users
 
   Scenario: user accessing secured page
