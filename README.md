@@ -17,13 +17,12 @@ _environment_ and _runner_ class to use. For example:
 > sbt -Denvironment=local 'test-only uk.gov.hmrc.runner.RunWip'
 ```
 
-This will execute all the features form the RunWip class on local environment. Whereas;
+This will execute all the features from the RunWip class on local environment. Whereas;
  
 ```
-> sm --start CUSTOMS_FINANCIALS_ALL -f
 > > sbt -Denvironment=qa 'test-only uk.gov.hmrc.runner.RunQa'
 
 ```
 
-Will execute all the features form the RunQa class on qa environment.
+Will execute all the features from the RunQa class on qa environment.
     
