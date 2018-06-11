@@ -8,12 +8,8 @@ import uk.gov.hmrc.utils.StartUpTearDown
 
 class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown{
 
-  Given("""^the (.*) feature is enabled$""") { (feature: String) =>
-    FeatureSwitch(feature.toLowerCase().replace(" ", "-")).enableFeature
-  }
-
-  Given("""^the (.*) feature is disabled""") { (feature: String) =>
-    FeatureSwitch(feature.toLowerCase().replace(" ", "-")).disableFeature
+  Given("""^the (.*) feature is (.*)""") { (feature: String, featureState: String) =>
+    FeatureSwitch(feature.toLowerCase().replace(" ", "-"), featureState.dropRight(1)).featureToggle
   }
 
   Given("""^I am on the (.*) page$""") { page: String =>

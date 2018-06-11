@@ -1,9 +1,6 @@
 @qa @acceptance
 Feature: Duty Deferment Statements
 
-  Background:
-    Given the duty deferment feature is enabled
-
   Scenario Outline: File can be downloaded
     Given I am on the Duty deferment page
     When I select the month '<month>' statement to download
