@@ -12,6 +12,10 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with Start
     FeatureSwitch(feature.toLowerCase().replace(" ", "-")).enableFeature
   }
 
+  Given("""^the (.*) feature is disabled""") { (feature: String) =>
+    FeatureSwitch(feature.toLowerCase().replace(" ", "-")).disableFeature
+  }
+
   Given("""^I am on the (.*) page$""") { page: String =>
     page match {
       case "Duty deferment" => DutyDefermentPage.goToPage()
@@ -27,5 +31,9 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with Start
 
   When("""^click submit$"""){ () =>
     click on className("button")
+  }
+
+  Then("""^page not found is returned$""") { () =>
+    pageTitle shouldBe "Page not found - 404"
   }
 }
