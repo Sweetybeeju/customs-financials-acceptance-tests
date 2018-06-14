@@ -1,16 +1,19 @@
 package uk.gov.hmrc.stepdefs
 
+import java.util
+
+import cucumber.api.DataTable
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.scalatest.Matchers
 import uk.gov.hmrc.pages.{DownloadedFile, DutyDefermentPage, FeatureSwitch, WebPage}
 import uk.gov.hmrc.utils.StartUpTearDown
 
 
-class DutyDefermentSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown{
+class DutyDefermentSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown {
 
   var statement: DownloadedFile = _
 
-  When("""^I select the month '(.*)' statement to download$""") { month: String  =>
+  When("""^I select the month '(.*)' statement to download$""") { month: String =>
     statement = DutyDefermentPage.selectStatement(month)
   }
 
@@ -24,8 +27,12 @@ class DutyDefermentSteps extends WebPage with ScalaDsl with EN with Matchers wit
     DutyDefermentPage.getFileName(link) should be(statement.name)
   }
 
-  Then("""^I am able to understand the size of the PDF for '(.*)'$""") { (month:String) =>
+  Then("""^I am able to understand the size of the PDF for '(.*)'$""") { (month: String) =>
     DutyDefermentPage.getFileSize(month) should be(statement.sizeDescription)
+  }
+
+  Then("""^I should see my following Duty Deferment Accounts$""") { data: DataTable =>
+
   }
 
 }

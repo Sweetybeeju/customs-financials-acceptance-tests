@@ -1,6 +1,8 @@
 package uk.gov.hmrc.pages
 
-object DashboardPage extends WebPage {
+object DashboardPage extends DashboardPage
+
+trait DashboardPage extends WebPage {
   override val url : String = getUrl(port) + "/customs-financials/dashboard"
 
   def getH1Text: String = {

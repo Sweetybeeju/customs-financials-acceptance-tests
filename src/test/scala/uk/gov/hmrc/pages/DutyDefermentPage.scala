@@ -9,7 +9,9 @@ import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
-object DutyDefermentPage extends WebPage with ScalaFutures {
+object DutyDefermentPage extends DutyDefermentPage
+
+trait DutyDefermentPage extends WebPage with ScalaFutures {
 
   override val url: String = getUrl(port) + "/customs-financials/duty-deferment"
 

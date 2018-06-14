@@ -18,6 +18,7 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with Start
       case "Cds landing" => CDSLandingPage.goToPage()
       case "Dashboard" => DashboardPage.goToPage()
       case "Auth login stub" => AuthLoginPage.goToPage()
+      case "Finance" => ""
     }
   }
 

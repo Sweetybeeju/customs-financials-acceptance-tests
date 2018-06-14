@@ -7,7 +7,7 @@ import uk.gov.hmrc.utils.Configuration
 
 object SignInPage extends SignInPage
 
-class SignInPage extends WebPage {
+trait SignInPage extends WebPage {
 
   override val url: String = Configuration.settings.SIGN_IN_PAGE
 
