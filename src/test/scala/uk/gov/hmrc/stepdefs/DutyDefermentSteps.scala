@@ -1,13 +1,10 @@
 package uk.gov.hmrc.stepdefs
 
-import java.util
-
 import cucumber.api.DataTable
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.scalatest.Matchers
-import uk.gov.hmrc.pages.{DownloadedFile, DutyDefermentPage, FeatureSwitch, WebPage}
+import uk.gov.hmrc.pages._
 import uk.gov.hmrc.utils.StartUpTearDown
-
 
 class DutyDefermentSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown {
 
@@ -35,4 +32,32 @@ class DutyDefermentSteps extends WebPage with ScalaDsl with EN with Matchers wit
 
   }
 
+  Given("""^I have a duty deferment account with DAN '(.*)'$""") { dan: Int =>
+    // TODO later, we may need this to setup DD account data in hods stub?
+    // if we don't, this step can potentially be removed
+  }
+
+  When("""^I navigate to the duty deferment account details page for DAN '(.*)'$""") { dan: Int =>
+    DutyDefermentAccountDetailsPage(findDutyDefermentAccount(dan)).goToPage()
+  }
+
+  Then("""^I should see the account summary for DAN '(.*)'$""") { dan: Int =>
+    val acc = findDutyDefermentAccount(dan)
+    DutyDefermentAccountDetailsPage(acc).getDisplayedAccount should be (acc)
+  }
+
+  private def findDutyDefermentAccount(dan: Int): DutyDefermentAccount = {
+    // TODO load accounts from JSON and return  the requested one as DD account. Hard coded for now.
+    DutyDefermentAccount(
+      1234567, "foo", 34632.00f, 60000.00f, 0.00f
+    )
+  }
+
 }
+
+case class DutyDefermentAccount(dan: Int,
+                                accountType: String,
+                                accountLimitRemaining: Float,
+                                totalAccountLimit: Float,
+                                guaranteeLimitRemaining: Float)
+
