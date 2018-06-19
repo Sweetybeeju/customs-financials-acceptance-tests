@@ -49,13 +49,13 @@ class DutyDefermentSteps extends WebPage with ScalaDsl with EN with Matchers wit
   private def findDutyDefermentAccount(dan: Int): DutyDefermentAccount = {
     // TODO load accounts from JSON and return  the requested one as DD account. Hard coded for now.
     DutyDefermentAccount(
-      1234567, "foo", 34632.00f, 60000.00f, 0.00f
+      "1234567", "foo", 34632.00f, 60000.00f, 0.00f
     )
   }
 
 }
 
-case class DutyDefermentAccount(dan: Int,
+case class DutyDefermentAccount(dan: String,
                                 accountType: String,
                                 accountLimitRemaining: Float,
                                 totalAccountLimit: Float,
