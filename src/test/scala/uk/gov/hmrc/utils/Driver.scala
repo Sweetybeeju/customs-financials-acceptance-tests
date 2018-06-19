@@ -7,6 +7,7 @@ import net.lightbody.bmp.proxy.auth.AuthType
 import net.lightbody.bmp.{BrowserMobProxy, BrowserMobProxyServer}
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.{ChromeDriver, ChromeDriverService, ChromeOptions}
+import org.openqa.selenium.firefox.{FirefoxDriver, FirefoxOptions, FirefoxProfile}
 import org.openqa.selenium.remote.{BrowserType, CapabilityType, DesiredCapabilities}
 
 object Driver {
@@ -34,7 +35,7 @@ object Driver {
   val instance: WebDriver = newWebDriver()
 
   def newWebDriver(): WebDriver = {
-    val browserProperty = systemProperties.getProperty("browser", "chrome")
+    val browserProperty = systemProperties.getProperty("browser", "firefox")
     val driver = createBrowser(browserProperty)
     driver
   }
@@ -42,8 +43,25 @@ object Driver {
   private def createBrowser(browserProperty: String): WebDriver = {
     browserProperty match {
       case "chrome" => createChromeDriver()
+      case "firefox" => createFirefoxDriver()
       case _ => throw new IllegalArgumentException(s"browser type $browserProperty not recognised ")
     }
+  }
+
+  private def createFirefoxDriver(): WebDriver ={
+    System.setProperty("webdriver.gecko.driver","/usr/local/bin/geckodriver")
+    System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE, "true")
+    System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null")
+    val profile = new FirefoxProfile()
+    profile.setAcceptUntrustedCertificates(true)
+    profile.setPreference("javascript.enabled" , true)
+
+    val options = new FirefoxOptions()
+    options.setProfile(profile)
+    options.setAcceptInsecureCerts(true)
+
+    val driver = new FirefoxDriver(options)
+    driver
   }
 
   private def createChromeDriver(): WebDriver = {
