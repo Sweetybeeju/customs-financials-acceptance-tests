@@ -8,3 +8,5 @@
       Examples:
         |dan    |
         |1234567|
+
+    Scenario: Statements display in descending chronological order

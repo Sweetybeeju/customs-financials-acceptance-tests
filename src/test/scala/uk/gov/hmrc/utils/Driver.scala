@@ -35,7 +35,7 @@ object Driver {
   val instance: WebDriver = newWebDriver()
 
   def newWebDriver(): WebDriver = {
-    val browserProperty = systemProperties.getProperty("browser", "firefox")
+    val browserProperty = systemProperties.getProperty("browser", "chrome")
     val driver = createBrowser(browserProperty)
     driver
   }
