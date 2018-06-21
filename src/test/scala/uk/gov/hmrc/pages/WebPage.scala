@@ -17,7 +17,7 @@ import scala.concurrent.duration.Duration
 trait WebPage extends WebBrowser with Assertions with Matchers with StartUpTearDown{
 
   val relativeUrl = ""
-  val port = 9000
+  val port = 9876
 
   val url = ""
   lazy val envUrl : String = Configuration.settings.url
