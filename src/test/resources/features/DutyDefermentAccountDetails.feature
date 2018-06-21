@@ -1,4 +1,4 @@
-@wip @CDSP-2031
+@CDSP-2031
   Feature: Duty Deferment Account Details
 
     Scenario Outline: Navigating to Account Details Page

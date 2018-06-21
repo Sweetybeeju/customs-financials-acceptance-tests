@@ -1,4 +1,4 @@
-@qa @acceptance @wip
+@qa @acceptance
 
 Feature: Cds finance page
   As a user

@@ -2,7 +2,7 @@ package uk.gov.hmrc.stepdefs
 
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.scalatest.Matchers
-import uk.gov.hmrc.pages.{AuthLoginPage, DashboardPage, SignInPage, WebPage}
+import uk.gov.hmrc.pages.{AuthLoginPage, SignInPage, WebPage}
 import uk.gov.hmrc.utils.StartUpTearDown
 
 class SignInSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown {
