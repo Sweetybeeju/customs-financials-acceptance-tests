@@ -8,7 +8,7 @@ case class DutyDefermentAccountDetailsPage(dutyDefermentAccount: DutyDefermentAc
 
   def getDisplayedAccount: DutyDefermentAccount = {
     DutyDefermentAccount(
-      find(cssSelector(".account .dan")).get.text.trim.toInt,
+      find(cssSelector(".account .dan")).get.text.trim.mkString,
       find(cssSelector(".account .account-type")).get.text.trim,
       find(cssSelector(".account .account-limit-remaining")).get.text.trim.toFloat,
       find(cssSelector(".account .total-account-limit")).get.text.trim.toFloat,

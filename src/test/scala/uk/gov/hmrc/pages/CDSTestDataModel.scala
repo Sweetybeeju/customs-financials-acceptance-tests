@@ -5,7 +5,13 @@ import play.api.libs.json.Json
 
 import scala.io.Source
 
-case class CDSTestDataModel(pid:String)
+case class Enrolment(name: String, identifierName: String, identifierValue: String, state: String)
+
+object Enrolment {
+  implicit val enrolmentFormats = Json.format[Enrolment]
+}
+
+case class CDSTestDataModel(pid:String, enrolments: Option[Seq[Enrolment]])
 
 object CDSTestDataModel{
 
