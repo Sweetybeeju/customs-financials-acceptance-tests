@@ -1,5 +1,9 @@
 package uk.gov.hmrc.pages
 
+import java.util.NoSuchElementException
+
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.{ExpectedCondition, WebDriverWait}
 import org.scalatest.selenium.WebBrowser
@@ -13,7 +17,7 @@ import scala.concurrent.duration.Duration
 trait WebPage extends WebBrowser with Assertions with Matchers with StartUpTearDown{
 
   val relativeUrl = ""
-  val port = 9876
+  val port = 9000
 
   val url = ""
   lazy val envUrl : String = Configuration.settings.url
@@ -41,5 +45,19 @@ trait WebPage extends WebBrowser with Assertions with Matchers with StartUpTearD
   def getTitle = pageTitle
 
   def isCurrentPage: Boolean = false
+
+  def elementText(selector: String) = {
+    try {
+      find(cssSelector(selector)).get.text.trim
+    } catch {
+      case _: NoSuchElementException => fail(s"Selector $selector not found in page")
+    }
+  }
+
+  def jsoupDocumentFor(selector: String) = {
+    val transactionsHTML = find(cssSelector(selector)).get.underlying.getAttribute("outerHTML")
+    val doc: Document = Jsoup.parseBodyFragment(transactionsHTML)
+    doc
+  }
 
 }
