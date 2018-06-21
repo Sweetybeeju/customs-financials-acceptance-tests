@@ -1,4 +1,4 @@
-@wip @CDSP-2031
+@acceptance @CDSP-2031
   Feature: Duty Deferment Account Details
     Background:
       Given I am signed in as a registered user
