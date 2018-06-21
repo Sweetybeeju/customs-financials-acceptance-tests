@@ -3,8 +3,10 @@ package uk.gov.hmrc.stepdefs
 import cucumber.api.DataTable
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.scalatest.Matchers
+import play.api.libs.json.{Format, Json}
 import uk.gov.hmrc.pages._
-import uk.gov.hmrc.utils.StartUpTearDown
+import uk.gov.hmrc.utils.{StartUpTearDown, TestDataLoader}
+import DutyDefermentAccount._
 
 class DutyDefermentSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown {
 
@@ -32,32 +34,39 @@ class DutyDefermentSteps extends WebPage with ScalaDsl with EN with Matchers wit
 
   }
 
-  Given("""^I have a duty deferment account with DAN '(.*)'$""") { dan: Int =>
+  Given("""^I have a duty deferment account with DAN '(.*)'$""") { dan: String =>
     // TODO later, we may need this to setup DD account data in hods stub?
     // if we don't, this step can potentially be removed
   }
 
-  When("""^I navigate to the duty deferment account details page for DAN '(.*)'$""") { dan: Int =>
+  When("""^I navigate to the duty deferment account details page for DAN '(.*)'$""") { dan: String =>
     DutyDefermentAccountDetailsPage(findDutyDefermentAccount(dan)).goToPage()
   }
 
-  Then("""^I should see the account summary for DAN '(.*)'$""") { dan: Int =>
-    val acc = findDutyDefermentAccount(dan)
-    DutyDefermentAccountDetailsPage(acc).getDisplayedAccount should be (acc)
+  Then("""^I should see the account summary for DAN '(.*)'$""") { dan: String =>
+    val expectedAccount = findDutyDefermentAccount(dan)
+    DutyDefermentAccountDetailsPage(expectedAccount).getDisplayedAccount should be (expectedAccount)
   }
 
-  private def findDutyDefermentAccount(dan: Int): DutyDefermentAccount = {
-    // TODO load accounts from JSON and return  the requested one as DD account. Hard coded for now.
-    DutyDefermentAccount(
-      "1234567", "foo", 34632.00f, 60000.00f, 0.00f
-    )
+  private def findDutyDefermentAccount(dan: String): DutyDefermentAccount = {
+    TestDataLoader.loadFromJson[DutyDefermentAccount](s"duty-deferment-accounts/${dan}")
   }
 
 }
 
 case class DutyDefermentAccount(dan: String,
-                                accountType: String,
+                                `type`: String,
                                 accountLimitRemaining: Float,
                                 totalAccountLimit: Float,
-                                guaranteeLimitRemaining: Float)
+                                guaranteeLimitRemaining: Float,
+                                statements: Seq[DutyDefermentAccountStatement] = Seq.empty)
 
+case class DutyDefermentAccountStatement(period: DutyDefermentAccountStatementPeriod)
+
+case class DutyDefermentAccountStatementPeriod(year: Int, month: Int, number: Int)
+
+object DutyDefermentAccount {
+  implicit val dutyDefermentAccountStatementPeriodFormat: Format[DutyDefermentAccountStatementPeriod] = Json.format[DutyDefermentAccountStatementPeriod]
+  implicit val dutyDefermentAccountStatementFormat: Format[DutyDefermentAccountStatement] = Json.format[DutyDefermentAccountStatement]
+  implicit val dutyDefermentAccountFormat: Format[DutyDefermentAccount] = Json.format[DutyDefermentAccount]
+}

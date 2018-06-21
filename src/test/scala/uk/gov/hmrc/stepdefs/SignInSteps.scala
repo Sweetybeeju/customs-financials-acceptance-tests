@@ -2,7 +2,7 @@ package uk.gov.hmrc.stepdefs
 
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.scalatest.Matchers
-import uk.gov.hmrc.pages.{AuthLoginPage, DashboardPage, SignInPage, WebPage}
+import uk.gov.hmrc.pages._
 import uk.gov.hmrc.utils.StartUpTearDown
 
 class SignInSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown {
@@ -16,7 +16,7 @@ class SignInSteps extends WebPage with ScalaDsl with EN with Matchers with Start
   }
 
   When("""^I (am |)sign(ed|) in as a (.*) user$"""){ (_:String, _:String, userType:String) =>
-    val continueUrl = SignInPage.continueUrl.get
+    val continueUrl = SignInPage.continueUrl.getOrElse(CDSLandingPage.url)
     AuthLoginPage.goToPage()
     AuthLoginPage.loginAuth(userType, continueUrl)
     AuthLoginPage.submit()
