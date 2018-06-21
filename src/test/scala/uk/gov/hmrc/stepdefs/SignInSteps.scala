@@ -15,7 +15,7 @@ class SignInSteps extends WebPage with ScalaDsl with EN with Matchers with Start
     SignInPage.isCurrentPage should be (true)
   }
 
-  When("""^I sign in as (.*) user$"""){ userType:String =>
+  When("""^I (am |)sign(ed|) in as a (.*) user$"""){ (_:String, _:String, userType:String) =>
     val continueUrl = SignInPage.continueUrl.get
     AuthLoginPage.goToPage()
     AuthLoginPage.loginAuth(userType, continueUrl)

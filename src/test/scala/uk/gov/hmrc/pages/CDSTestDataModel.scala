@@ -1,12 +1,10 @@
 package uk.gov.hmrc.pages
 
-
 import play.api.libs.json.Json
-
 import scala.io.Source
 
-case class CDSTestDataModel(pid: String, enrolments: List[Enrolment])
-case class Enrolment(key: String, identifier: String, value: String, status: String)
+case class Enrolment(name: String, identifier: String, value: String, state: String)
+case class CDSTestDataModel(pid:String, enrolments: Option[Seq[Enrolment]])
 
 object CDSTestDataModel{
 

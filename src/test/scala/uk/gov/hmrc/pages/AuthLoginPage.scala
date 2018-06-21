@@ -12,11 +12,14 @@ trait AuthLoginPage extends WebPage {
   def loginAuth(userType:String, continueUrl: String) = {
     val userdata = CDSTestDataModel.testData(s"$userType.json")
     textField("authorityId").value = userdata.pid
-    textField("redirectionUrl").value = url
-    textField("enrolment[0].name").value = userdata.enrolments.head.key
-    textField("enrolment[0].taxIdentifier[0].name").value = userdata.enrolments.head.identifier
-    textField("enrolment[0].taxIdentifier[0].value").value = userdata.enrolments.head.value
-    // TODO: cannot set select option, without values set
-    // singleSel("enrolment[0].state").value = userdata.enrolments.head.status
+    textField("redirectionUrl").value = continueUrl
+
+    for ((enrolment, i) <- userdata.enrolments.getOrElse(List()).zipWithIndex) {
+      textField("enrolment[$i].name").value = enrolment.name
+      textField(s"enrolment[$i].taxIdentifier[$i].name").value = enrolment.identifier
+      textField(s"enrolment[$i].taxIdentifier[$i].value").value = enrolment.value
+      // TODO: Activated by default - cannot set select option, without value attribute
+      // singleSel(s"enrolment[$i].state").value = enrolment.state
+    }
   }
 }
