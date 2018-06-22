@@ -15,7 +15,7 @@ trait AuthLoginPage extends WebPage {
     textField("redirectionUrl").value = continueUrl
 
     for ((enrolment, i) <- userdata.enrolments.getOrElse(List()).zipWithIndex) {
-      textField("enrolment[$i].name").value = enrolment.name
+      textField(s"enrolment[$i].name").value = enrolment.name
       textField(s"enrolment[$i].taxIdentifier[$i].name").value = enrolment.identifier
       textField(s"enrolment[$i].taxIdentifier[$i].value").value = enrolment.value
       // TODO: Activated by default - cannot set select option, without value attribute
