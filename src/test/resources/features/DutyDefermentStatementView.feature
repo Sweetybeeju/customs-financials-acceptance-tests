@@ -8,11 +8,18 @@ Feature: Duty Deferment Statement View Page
     And I sign in as a registered user
 
   # TODO separate scenario for not-signed-in redirect
+    Scenario: Valid user Authentication
+    Given I am not signed in
+    When I attempt to navigate to the Duty Deferment Statement View page
+    Then I am redirected to the Sign In page
+    When I sign in as a valid user
+    Then I am redirected to the Duty Deferment Statement View page
 
   Scenario: Page title and period narrative
     Given I have at least one Statement available to view
     When I navigate to the Duty Deferment Statement View page
-#    Then the page title should be X (check window title & h1 element)
+   #Then the page title should be X (check window title & h1 element)
+    Then Iam able to see the page title as 'Deferment Statement'
     # TODO explicitly state expected period narrative in feature file
     Then I am able to see the period in which the Statement was issued
 
