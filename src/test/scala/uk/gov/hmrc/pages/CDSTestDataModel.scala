@@ -4,7 +4,7 @@ import play.api.libs.json.Json
 import scala.io.Source
 
 case class Enrolment(name: String, identifier: String, value: String, state: String)
-case class CDSTestDataModel(pid:String, enrolments: Option[Seq[Enrolment]])
+case class CDSTestDataModel(pid: String, enrolments: Option[Seq[Enrolment]])
 
 object CDSTestDataModel{
 

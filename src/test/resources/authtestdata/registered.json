@@ -1,11 +1,6 @@
 {
   "pid" : "12345678",
   "enrolments": [
-    {
-      "name": "HMRC-CUS-ORG",
-      "identifierName": "EORINumber",
-      "identifierValue": "12345678",
-      "state": "Activated"
-    }
+    { "name": "HMRC-CUS-ORG", "identifier": "EORINumber", "value": "12345678", "state": "Activated" }
   ]
 }

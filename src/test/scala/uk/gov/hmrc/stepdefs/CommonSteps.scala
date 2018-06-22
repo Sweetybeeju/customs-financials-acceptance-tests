@@ -15,7 +15,7 @@ class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with Start
     FeatureSwitch(feature.toLowerCase().replace(" ", "-"), featureState.dropRight(1)).featureToggle
   }
 
-  Given("""^I (am on|try to navigate to|navigate to) the (.*) page$""") { (_: String, page: String) =>
+  Given("""^I (am on|navigate to|try to navigate to) the (.*) page$""") { (_: String, page: String) =>
     page match {
       case "Financials Landing" => FinancialsLandingPage.goToPage()
       case "Duty deferment" => DutyDefermentPage.goToPage()
