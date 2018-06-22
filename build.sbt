@@ -26,6 +26,7 @@ libraryDependencies ++= Seq(
   "org.seleniumhq.selenium" % "selenium-java" % "3.7.1" % "test",
   "com.google.guava" % "guava" % "23.0",
   "org.pegdown" % "pegdown" % "1.6.0" % "test",
+  "org.jsoup" % "jsoup" % "1.7.3" % "test",
   "info.cukes" % "cucumber-junit" % CucumberVersion % "test",
   "info.cukes" % "cucumber-picocontainer" % CucumberVersion % "test",
   "info.cukes" %% "cucumber-scala" % CucumberVersion % "test",

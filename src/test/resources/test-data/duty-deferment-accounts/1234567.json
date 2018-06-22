@@ -1,0 +1,49 @@
+{
+  "dan" : "1234567",
+  "type" : "foo",
+  "status" : "bar",
+  "address" : {
+    "lines": [
+      "First Business",
+      "Big Road Technology Estate",
+      "Compartment 2"
+    ],
+    "town": "Saltaire",
+    "postcode": "BD1 5AB"
+  },
+  "accountLimitRemaining" : 34632.00,
+  "totalAccountLimit" : 60000.00,
+  "guaranteeLimit" : 60000.00,
+  "guaranteeLimitRemaining" : 0.00,
+  "statements" : [{
+    "period" : {
+      "year" : 2018,
+      "month" : 10,
+      "number" : 5
+    }
+  },{
+    "period" : {
+      "year" : 2018,
+      "month" : 10,
+      "number" : 4
+    }
+  },{
+    "period" : {
+      "year" : 2018,
+      "month" : 10,
+      "number" : 3
+    }
+  },{
+    "period" : {
+      "year" : 2018,
+      "month" : 10,
+      "number" : 2
+    }
+  },{
+    "period" : {
+      "year" : 2018,
+      "month" : 10,
+      "number" : 1
+    }
+  }]
+}

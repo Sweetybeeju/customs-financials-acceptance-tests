@@ -6,18 +6,22 @@ import uk.gov.hmrc.pages._
 import uk.gov.hmrc.utils.StartUpTearDown
 
 
-class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown{
+class CommonSteps extends WebPage with ScalaDsl with EN with Matchers with StartUpTearDown {
+
+  val someDAN = "1234567"
+  val someStatementKey = StatementKey(someDAN, 2018, 2, 3)
 
   Given("""^the (.*) feature is (.*)""") { (feature: String, featureState: String) =>
     FeatureSwitch(feature.toLowerCase().replace(" ", "-"), featureState.dropRight(1)).featureToggle
   }
 
-  Given("""^I am on the (.*) page$""") { page: String =>
+  Given("""^I (am on|navigate to) the (.*) page$""") { (_: String, page: String) =>
     page match {
       case "Duty deferment" => DutyDefermentPage.goToPage()
       case "Cds landing" => CDSLandingPage.goToPage()
       case "Dashboard" => DashboardPage.goToPage()
       case "Auth login stub" => AuthLoginPage.goToPage()
+      case "Duty Deferment Statement View" => DutyDefermentStatementViewPage(someStatementKey).goToPage()
       case "Finance" => ""
     }
   }
